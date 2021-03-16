@@ -145,7 +145,17 @@ def geneModelToSpliceGraph(gene, **args):
             node.addIsoform(p.id)
 
     featureList = list(gene.mrna.values()) if useCDS else list(gene.isoforms.values())
-    featureList = [f for f in featureList if f not in badForms]
+    ##featureList = [f for f in featureList if f not in badForms]
+    newList = []
+    for f in featureList:
+        try:
+            if f not in badForms:
+                newList.append(f)
+        except TypeError as te:
+            sys.stderr.write('\n** {} ({}) ERROR'.format(f, type(f)))
+            sys.stderr.write('HASH: {}'.format(f.__hash__()))
+            raise te
+
     if not featureList:
         isoLen = len(gene.isoforms)
         rnaLen = len(gene.mrna)

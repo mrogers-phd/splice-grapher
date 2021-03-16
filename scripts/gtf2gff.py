@@ -88,11 +88,11 @@ indicator.finish()
 # Sort records by chromosome before writing them to GFF3 file
 keys = sorted(chromDict.keys())
 if opts.verbose :
-    print "Stored information for %d chromosomes:" % len(keys)
+    print("Stored information for {} chromosomes:".format(len(keys)))
     if skipped :
-        print "  skipped the following record types:"
+        print("  skipped the following record types:")
         for k in sorted(skipped.keys()) :
-            print "   %s (%s records)" % (k, commaFormat(skipped[k]))
+            print("   %s (%s records)" % (k, commaFormat(skipped[k])))
 
 for k in keys :
     # Search chromosome for invalid genes
@@ -104,9 +104,9 @@ for k in keys :
 
     if opts.verbose : 
         if invalid :
-            print "  chromosome %s: %12d genes (%d invalid **)" % (k, len(chromDict[k]), invalid)
+            print("  chromosome %s: %12d genes (%d invalid **)" % (k, len(chromDict[k]), invalid))
         else :
-            print "  chromosome %s: %12d genes" % (k, len(chromDict[k]))
+            print("  chromosome %s: %12d genes" % (k, len(chromDict[k])))
 
     # Write out entire chromosome
     chromDict[k].writeGFF3(outStream)

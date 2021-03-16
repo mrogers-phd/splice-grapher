@@ -21,6 +21,7 @@ Module for manipulating SAM-formatted files.
 from SpliceGrapher.shared.utils import ProgressIndicator, ezopen, getAttribute
 from SpliceGrapher.shared.ShortRead import *
 from sys import maxsize as MAXINT
+from io import TextIOWrapper
 import sys,re
 
 # Header tags
@@ -927,12 +928,19 @@ def samInput(source) :
     """Convenience method that returns an iterator over a set of SAM records.
     If source is a list, set or file stream it returns the object.  A string
     is interpreted as a file path to be opened for input and the stream returned."""
-    if type(source) in [list, set, file] :
+    if type(source) == list:
         return source
-    elif type(source) == str :
+
+    if type(source) == set:
+        return source
+
+    if type(source) == TextIOWrapper:
+        return source
+
+    if type(source) == str :
         return samIterator(source)
-    else :
-        raise ValueError('Unrecognized type %s for SAM input' % type(source))
+
+    raise ValueError('Unrecognized type %s for SAM input' % type(source))
 
 def samIterator(path) :
     """Return an iterator over SAM/BAM records."""

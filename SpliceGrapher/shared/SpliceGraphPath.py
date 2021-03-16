@@ -43,14 +43,21 @@ class SpliceGraphPath(object):
         followed by longest exons and total path span."""
         if len(self) != len(o):
             return len(self) - len(o)
+
         # Second priority: path with longest exons
         if self.lengths != o.lengths:
             return self.lengths - o.lengths
+
         # Finally try path with longest span
         return self.span() - o.span()
 
     def __hash__(self):
         return self.__str__().__hash__()
+
+    def __lt__(self, o):
+        if self.minpos == o.minpos:
+            return self.maxpos < o.maxpos
+        return self.minpos < o.maxpos
 
     def __len__(self):
         """Returns the length given as the number of nodes."""

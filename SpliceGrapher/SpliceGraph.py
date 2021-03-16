@@ -850,6 +850,14 @@ class SpliceGraphNode(object) :
         """Returns the length of the genomic region represented by the node."""
         return self.maxpos-self.minpos+1
 
+    def __lt__(self, other) :
+        """Permits sorting based on minimum node position.  Ties are broken by the
+        shorter of the two nodes."""
+        if self.minpos == other.minpos :
+            return self.maxpos < other.maxpos
+        else :
+            return self.minpos < other.minpos
+
     def putativeChildren(self) :
         """Returns a set of putative children for an unresolved node,
         or an empty set if there are none or the node is not unresolved."""

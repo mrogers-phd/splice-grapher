@@ -246,8 +246,7 @@ def makeSupportedGraph(graph, clusters, junctions, **args):
         delta = afterSize-beforeSize
         sys.stderr.write('  added %d isoforms based on junctions:\n' % delta)
         for e in keysToAdd:
-            sys.stderr.write('  %s:
-                    %s\n' % (e,uniqueIsoformJct[e]))
+            sys.stderr.write('  %s: %s\n' % (e,uniqueIsoformJct[e]))
 
     if not isoforms:
         if verbose:

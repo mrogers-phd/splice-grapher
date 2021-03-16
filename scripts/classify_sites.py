@@ -66,12 +66,12 @@ def classifyGenes(classifiers, geneModel, seqDict, **args) :
     verbose   = getAttribute('verbose', False, **args)
 
     if len(seqDict) != 1 : raise ValueError('Must have exactly 1 sequence: found %d' % len(seqDict))
-    keys  = seqDict.keys()
+    keys  = list(seqDict.keys())
     chrom = keys[0]
 
     # Track performance on known sites
-    truePos  = {}.fromkeys(classifiers.keys(), 0)
-    falseNeg = {}.fromkeys(classifiers.keys(), 0)
+    truePos  = {}.fromkeys(list(classifiers.keys()), 0)
+    falseNeg = {}.fromkeys(list(classifiers.keys()), 0)
 
     chromosome = geneModel.getChromosome(chrom)
     if not chromosome :
@@ -80,7 +80,7 @@ def classifyGenes(classifiers, geneModel, seqDict, **args) :
     # Absolute minimum window size required by classifiers
     # is the maximum intron/exon size used by any of them.
     minWindow = 0
-    for svm in classifiers.values() :
+    for svm in list(classifiers.values()) :
         minWindow = max(minWindow, max(svm.config.exonSize(), svm.config.intronSize()))
     minWindow += 1
 
@@ -127,12 +127,12 @@ def classifyGenes(classifiers, geneModel, seqDict, **args) :
         (tp,fn) = classifySequence(chrom, gene.strand, classifiers, outStream,
                                    minpos=gene.minpos, maxpos=gene.maxpos, knownDict=knownDict, verbose=verbose, outputAll=outputAll)
 
-        for t in classifiers.keys() :
+        for t in list(classifiers.keys()) :
             truePos[t]  += tp[t]
             falseNeg[t] += fn[t]
 
     if verbose :
-        for t in classifiers.keys() :
+        for t in list(classifiers.keys()) :
             total = truePos[t] + falseNeg[t]
             if total > 0 :
                 logMsg('Performance on %s sites: %d TP, %d FN, ACC = %.5f' % (t, truePos[t], falseNeg[t], float(truePos[t])/(truePos[t]+falseNeg[t])))
@@ -145,15 +145,15 @@ def classifySequence(chrom, strand, classifiers, outStream, **args) :
     (Note: DNA sequence is obtained through the 'getSequence' method.)
     """
     minpos     = getAttribute('minpos', 0, **args)
-    maxpos     = getAttribute('maxpos', sys.maxint, **args)
+    maxpos     = getAttribute('maxpos', sys.maxsize, **args)
     knownDict  = getAttribute('knownDict', None, **args)
     clusters   = getAttribute('clusters', None, **args)
     verbose    = getAttribute('verbose', False, **args)
     outputAll  = getAttribute('outputAll', False, **args)
 
     # Track known site performance
-    truePos  = {}.fromkeys(classifiers.keys(), 0)
-    falseNeg = {}.fromkeys(classifiers.keys(), 0)
+    truePos  = {}.fromkeys(list(classifiers.keys()), 0)
+    falseNeg = {}.fromkeys(list(classifiers.keys()), 0)
 
     # Turn off PyML messages:
     hideStdout()
@@ -167,7 +167,7 @@ def classifySequence(chrom, strand, classifiers, outStream, **args) :
                 if k >= len(clusters) : break
             if not clusters[k].contains(i) : continue
 
-        for cName in classifiers.keys() :
+        for cName in list(classifiers.keys()) :
             svm       = classifiers[cName]
             siteDimer = svm.config.dimer()
             siteType  = ACCEPTOR_SITE if svm.config.acceptor() else DONOR_SITE
@@ -252,7 +252,7 @@ writeStartupMessage()
 if opts.model : validateFile(opts.model)
 ## if opts.depths  : validateFile(opts.depths)
 
-posRange = [0,sys.maxint]
+posRange = [0,sys.maxsize]
 if opts.range :
     parts    = [int(x) for x in opts.range.split(',')]
     posRange = (min(parts), max(parts))

@@ -295,6 +295,14 @@ class BaseFeature(object) :
     def __len__(self) :
         return self.maxpos-self.minpos+1
 
+    def __lt__(self, other) :
+        if self.chromosome != other.chromosome :
+            return self.chromosome < other.chromosome
+        elif self.minpos == other.minpos :
+            return self.maxpos < other.maxpos
+        else :
+            return self.minpos < other.minpos
+
     def setParent(self, id) :
         self.parent = id
 
@@ -329,6 +337,11 @@ class Isoform(BaseFeature) :
 
     def __eq__(self, other) :
         return self.featureType == other.featureType and self.id == other.id
+
+    # Python3 weirdness: if we redifine __eq__ (above),
+    # then we have to duplicate the parent's __hash__ and __lt__ functions
+    def __hash__(self) :
+        return self.__str__().__hash__()
 
     def acceptorList(self) :
         """
