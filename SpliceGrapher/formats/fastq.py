@@ -129,8 +129,8 @@ class fastq_itr (object) :
     def __iter__(self) :
         return self
 
-    def next(self) :
-        return self.__itr.next()
+    def __next__(self) :
+        return next(self.__itr)
 
     def __getitem__(self,name) :
         return fastq_get_by_name(iter(self),name)

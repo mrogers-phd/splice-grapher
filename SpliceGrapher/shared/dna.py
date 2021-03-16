@@ -43,7 +43,7 @@ def complement(s):
     """
     try:
         return ''.join([COMPLEMENT[c] for c in s])
-    except KeyError, e:
+    except KeyError as e:
         raise ValueError("DNA sequence error")
 
 def reverseComplement(s):

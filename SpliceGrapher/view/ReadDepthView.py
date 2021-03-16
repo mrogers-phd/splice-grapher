@@ -51,7 +51,7 @@ class ReadDepthView(object) :
         yTitle    = getAttribute('yTitle', 'Read Depth', **args)
 
         lastPos = min(len(self.depths), self.xrange[1])
-        X       = range(self.xrange[0]-1,lastPos)
+        X       = list(range(self.xrange[0]-1,lastPos))
         Y       = [self.depths[i] for i in X]
         if not Y : return
 

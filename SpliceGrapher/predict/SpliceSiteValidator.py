@@ -32,7 +32,7 @@ class SpliceSiteValidator(object) :
 
     def getChromosomes(self) :
         """Returns the chromosomes found in the FASTA file."""
-        return self.loader.keys()
+        return list(self.loader.keys())
 
     def getDimer(self, chrom, pos, strand, siteType, window=0) :
         """Returns the given splice site dimer."""

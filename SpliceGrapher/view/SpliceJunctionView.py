@@ -23,7 +23,7 @@ from SpliceGrapher.shared.ShortRead  import KNOWN_JCT, UNKNOWN_JCT, PREDICTED_JC
 
 from matplotlib import patches
 from matplotlib.path import Path
-from sys        import maxint as MAXINT
+from sys        import maxsize as MAXINT
 import sys
 
 # Color coding:

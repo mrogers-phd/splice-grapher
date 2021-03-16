@@ -32,7 +32,7 @@ def countFunctionName(asType) :
     try :
         return COUNT_FUNCTION[key]
     except KeyError :
-        raise ValueError('Unrecognized AS type for summary average: %s is not in %s' % (asType, '/'.join(EVENT_ABBREVS.keys())))
+        raise ValueError('Unrecognized AS type for summary average: %s is not in %s' % (asType, '/'.join(list(EVENT_ABBREVS.keys()))))
 
 class AbstractStatistics(object) :
     """Base class for all statistics classes."""
@@ -208,7 +208,7 @@ class SummaryStatistics(AbstractStatistics) :
             indicator.update()
             try :
                 g = getFirstGraph(f)
-            except KeyError, ke :
+            except KeyError as ke :
                 raise KeyError('Invalid graph in file %s: %s' % (f,str(ke)))
             except ValueError :
                 continue
@@ -221,7 +221,7 @@ class SummaryStatistics(AbstractStatistics) :
         """Adds a set, dictionary or a list of graphs to the set.  Raises an
         exception if the instance has already loaded any of the graphs."""
         if type(graphs) == type({}) :
-            graphList = graphs.values()
+            graphList = list(graphs.values())
         elif type(graphs) == type(set([])) :
             graphList = list(graphs)
         elif type(graphs) == type([]) :
@@ -241,7 +241,7 @@ class SummaryStatistics(AbstractStatistics) :
         """Returns the total number of graphs stored that have AS.
         Note: ignores alternative initiating or terminating exons
         unless 'useAll' is set."""
-        return len([s for s in self.stats.values() if s.hasAS(useAll=useAll)])
+        return len([s for s in list(self.stats.values()) if s.hasAS(useAll=useAll)])
 
     def avg(self, asType) :
         """Returns the average value for the given AS type."""
@@ -253,12 +253,12 @@ class SummaryStatistics(AbstractStatistics) :
 
     def avgBranchingFactor(self) :
         """Returns the average branching factor per graph."""
-        total = sum([s.branchingFactor() for s in self.stats.values()])
+        total = sum([s.branchingFactor() for s in list(self.stats.values())])
         return self.computeAverage(total)
 
     def avgMaxBranchingFactor(self) :
         """Returns the average maximum branching factor per graph."""
-        total = sum([s.maxBranchingFactor() for s in self.stats.values()])
+        total = sum([s.maxBranchingFactor() for s in list(self.stats.values())])
         return self.computeAverage(total)
 
     def avgNodes(self) :
@@ -267,19 +267,19 @@ class SummaryStatistics(AbstractStatistics) :
 
     def computeAverage(self, count) :
         """Returns the average value given a sum, based on the number of graphs in this instance."""
-        N = len(self.stats.values())
+        N = len(list(self.stats.values()))
         return float(count)/N if N > 0 else 0.0
 
     def edgeCount(self) :
         """Returns the total number of edges in all graphs."""
         # Could use either parents or children
-        return sum([s.edgeCount() for s in self.stats.values()])
+        return sum([s.edgeCount() for s in list(self.stats.values())])
 
     def nodeCount(self) :
         """Returns the number of nodes in a graph."""
-        return sum([s.nodeCount() for s in self.stats.values()])
+        return sum([s.nodeCount() for s in list(self.stats.values())])
 
     def total(self, asType) :
         """Returns the total for the given AS type."""
         funcName = countFunctionName(asType)
-        return sum([getattr(s,funcName)() for s in self.stats.values()])
+        return sum([getattr(s,funcName)() for s in list(self.stats.values())])

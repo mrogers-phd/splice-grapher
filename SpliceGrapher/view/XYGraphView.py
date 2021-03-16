@@ -19,7 +19,7 @@
 Module that adds a simple graph to a plot.
 """
 from SpliceGrapher.shared.utils import *
-from sys import maxint as MAXINT
+from sys import maxsize as MAXINT
 
 BAR_GRAPH     = 'bar'
 LINE_GRAPH    = 'line'

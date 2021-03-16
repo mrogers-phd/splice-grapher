@@ -77,7 +77,7 @@ def adjustDepths(depths, ranges, **args):
     gaps      = getGaps(ranges)
     minpos    = ranges[0].minpos
     maxpos    = min(len(depths), ranges[-1].maxpos)
-    fullRange = range(minpos,maxpos+1)
+    fullRange = list(range(minpos,maxpos+1))
 
     # Easy part -- simply shift values within an exon:
     # Create map from positions to associated ranges
@@ -336,7 +336,7 @@ def getGraphRanges(G, **args):
     that represent all the overlapping nodes in the graph."""
     unresolved = getAttribute('unresolved', False, **args)
     if unresolved:
-        return getRanges(G.nodeDict.values(), **args)
+        return getRanges(list(G.nodeDict.values()), **args)
     else:
         return getRanges(G.resolvedNodes(), **args)
 

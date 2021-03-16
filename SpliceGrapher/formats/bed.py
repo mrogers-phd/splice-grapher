@@ -96,7 +96,7 @@ class BEDRecord(object) :
         for col in ALL_COLUMNS :
             try :
                 self.attrs[col] = parts[col]
-            except IndexError, ie :
+            except IndexError as ie :
                 if col in REQUIRED_COLUMNS :
                     raise ie
                 self.attrs[col] = None

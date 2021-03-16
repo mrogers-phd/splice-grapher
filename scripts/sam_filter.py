@@ -282,7 +282,7 @@ for line in samIterator(samFile, isBam=bamFormat) :
 
     try :
         rec, matches = acceptSAMRecord(s, indicator.ctr)
-    except ValueError,ve :
+    except ValueError as ve :
         invalidCigar += 1
         continue
 
@@ -313,7 +313,7 @@ for line in samIterator(samFile, isBam=bamFormat) :
             try :
                 donGene = geneModel.getGeneFromLocations(chrom, don, don, jct.strand)
                 accGene = geneModel.getGeneFromLocations(chrom, acc, acc, jct.strand)
-            except KeyError, ke :
+            except KeyError as ke :
                 #sys.stderr.write('\nError looking for genes on chromosome %s (strand %s) at positions %d or %d' \
                 #        % (chrom, jct.strand, don, acc))
                 #sys.stderr.write('Offending SAM record:\n%s\n' % line)

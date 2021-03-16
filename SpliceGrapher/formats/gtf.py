@@ -18,7 +18,7 @@
 from SpliceGrapher.shared.utils import *
 from SpliceGrapher.SpliceGraph  import SpliceGraph
 
-from sys import maxint as MAXINT
+from sys import maxsize as MAXINT
 import sys
 
 # GTF columns (summarized from GTF 2.2 spec):
@@ -63,7 +63,7 @@ ALL_ENSEMBL_SOURCES = [ "3prime_overlapping_ncrna", "ambiguous_orf", "antisense"
                         "TR_J_pseudogene", "tRNA", "tRNA_pseudogene", "TR_V_gene", "TR_V_pseudogene",
                         "unitary_pseudogene", "unprocessed_pseudogene",]
 
-(SEQNAME_INDEX, SOURCE_INDEX, FEATURE_INDEX, START_INDEX, END_INDEX, SCORE_INDEX, STRAND_INDEX, FRAME_INDEX, ATTR_INDEX, COMMENT_INDEX) = range(10)
+(SEQNAME_INDEX, SOURCE_INDEX, FEATURE_INDEX, START_INDEX, END_INDEX, SCORE_INDEX, STRAND_INDEX, FRAME_INDEX, ATTR_INDEX, COMMENT_INDEX) = list(range(10))
 
 # EMBL appears to store chromosome ids as integers or X, Y or M:
 KNOWN_CHROMOSOMES = ['X', 'Y', 'M']
@@ -134,7 +134,7 @@ class GTF_Chromosome(object) :
         self.genes[rec.gene_name()].append(rec)
 
     def keys(self) :
-        return self.genes.keys()
+        return list(self.genes.keys())
 
     def __getitem__(self,k) :
         return self.genes[k]
@@ -373,7 +373,7 @@ class GTFRecord(object) :
         parts  = [s.strip() for s in field.split(';')]
         result = dict([p.split() for p in parts if len(p) > 0])
         if self.verbose : fpkm = False
-        for k in result.keys() :
+        for k in list(result.keys()) :
             if self.verbose : fpkm |= (k == 'FPKM')
             result[k] = result[k].replace('"','')
         if self.verbose and not fpkm : sys.stderr.write('%s HAS NO FPKM ATTRIBUTE\n' % result[GENE_ID_ATTR])
@@ -408,16 +408,16 @@ class GTFParser(object) :
     def __iter__(self) :
         return self
 
-    def next(self) :
+    def __next__(self) :
         """Iterator implementation."""
         try :
-            return self.graphDict[self.graphIter.next()]
+            return self.graphDict[next(self.graphIter)]
         except Exception :
             raise StopIteration
 
     def finishGraphs(self, **args) :
         """Completes all graphs and annotates them."""
-        graphs  = self.graphDict.values()
+        graphs  = list(self.graphDict.values())
         for g in graphs :
             g.annotate()
 
@@ -495,4 +495,4 @@ def keyString(rec) :
 
 def getFirstCufflinksGraph(f) :
     """Returns the first graph in a Cufflinks GTF file."""
-    return GTFParser(f).next()
+    return next(GTFParser(f))

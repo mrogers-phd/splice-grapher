@@ -39,9 +39,9 @@ parser.add_option('--show-types', dest='showtypes', default=False, help='Outputs
 opts, args = parser.parse_args(sys.argv[1:])
 
 if opts.showtypes :
-    print "Known ENSEMBL source types:"
+    print("Known ENSEMBL source types:")
     for t in ALL_ENSEMBL_SOURCES :
-        print "  ", t
+        print("  ", t)
     sys.exit(0)
 
 if len(args) != 1 :

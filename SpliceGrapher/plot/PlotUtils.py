@@ -29,7 +29,7 @@ from SpliceGrapher.view.ReadDepthView        import DEFAULT_LOGY_THRESHOLD
 from SpliceGrapher.view.GeneView             import GeneView
 from SpliceGrapher.plot.PlotterConfig        import *
 
-from sys import maxint as MAXINT
+from sys import maxsize as MAXINT
 import matplotlib, re, sys, math
 
 # Formatting directives for inserting values into title strings
@@ -141,7 +141,7 @@ def generatePlot(p, plotSpecs, plotAxes, **args) :
     elif p.plot_type == ISOFORM_PLOT :
         # Nodes to highlight in isoform plot:
         weightDict    = loadIsoformWeights(data.name,p.iso_weights) if p.iso_weights else None
-        features      = [n for n in data.nodeDict.values() if n.id in p.features] if p.features else []
+        features      = [n for n in list(data.nodeDict.values()) if n.id in p.features] if p.features else []
         patches,extra = plotIsoforms(data, plotAxes,
                                      geneName=data.name,
                                      genes=geneList,

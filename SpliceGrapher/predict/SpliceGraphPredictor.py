@@ -183,7 +183,7 @@ class VirtualCluster(object) :
     """Class that encapsulates a virtual cluster of contiguous
     overlapping short-read clusters and graph nodes."""
     def __init__(self, node=None, cluster=None) :
-        self.minpos   = sys.maxint
+        self.minpos   = sys.maxsize
         self.maxpos   = 0
         self.nodes    = set()
         self.clusters = set()
@@ -342,7 +342,7 @@ class SpliceGraphPredictor(object) :
                 if self.graph.strand == '+' and d < a : continue
                 if self.graph.strand == '-' and d > a : continue
 
-                newId = self.nodegen.next()
+                newId = next(self.nodegen)
                 node  = self.graph.addNode(newId, a, d)
                 # If the node already exists (new node id not needed) skip it
                 if node.id == newId : result.append(node)
@@ -362,7 +362,7 @@ class SpliceGraphPredictor(object) :
         Convert a set of acceptor and donor sites within a virtual cluster
         into a string representation of 'a' and 'd' characters.
         """
-        positions = range(cluster.minpos, cluster.maxpos+1)
+        positions = list(range(cluster.minpos, cluster.maxpos+1))
         symbols   = {}.fromkeys(positions,'')
 
         # An acceptor and a donor may use the same splice-site location when there are
@@ -543,7 +543,7 @@ class SpliceGraphPredictor(object) :
                 novelNodes.update(newNodes)
 
         # Resolve edges for novel nodes
-        self.nodes = self.graph.nodeDict.values()
+        self.nodes = list(self.graph.nodeDict.values())
         for node in novelNodes :
             adjacentJunctions = [j for j in self.simpleJunctions if j.acceptor == node.acceptorEnd() or j.donor == node.donorEnd()]
             self.updateEdges(node, adjacentJunctions)
@@ -554,7 +554,7 @@ class SpliceGraphPredictor(object) :
         graphJunctions   = set([SimpleJunction(e.minpos, e.maxpos, self.graph.strand) for e in edgeSet(self.graph)])
         missingJunctions = self.novelJunctions - graphJunctions
         for j in missingJunctions :
-            candidates = [n for n in self.graph.nodeDict.values() if n.donorEnd() == j.donor or n.acceptorEnd() == j.acceptor]
+            candidates = [n for n in list(self.graph.nodeDict.values()) if n.donorEnd() == j.donor or n.acceptorEnd() == j.acceptor]
             if not candidates : continue
             for node in candidates :
                 before    = node.attrs[DISPOSITION_KEY]
@@ -565,7 +565,7 @@ class SpliceGraphPredictor(object) :
         self.graph.annotate()
 
         # Remove temporary internal flags:
-        for n in self.graph.nodeDict.values() :
+        for n in list(self.graph.nodeDict.values()) :
             try :
                 del n.attrs[FROZEN_KEY]
             except KeyError :
@@ -581,7 +581,7 @@ class SpliceGraphPredictor(object) :
         # Write graph to output file
         if 'output' in args :
             self.talkativeMessage('Unresolved nodes in %s:' % self.graph.name)
-            for n in self.graph.nodeDict.values() :
+            for n in list(self.graph.nodeDict.values()) :
                 if not n.isUnresolved() : continue
 
             outStream = args['output']

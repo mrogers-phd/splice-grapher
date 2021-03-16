@@ -19,7 +19,7 @@
 Module that encapsulates a splice graph.
 """
 from SpliceGrapher.shared.utils import *
-from sys import maxint as MAXINT
+from sys import maxsize as MAXINT
 import sys
 
 # Attributes used in standard GFF3 files:
@@ -123,7 +123,7 @@ def edgeSet(G) :
     This includes duplicate edges between distinct nodes as found
     in alternate 3'/5' events."""
     result = set([])
-    for n in G.nodeDict.values() :
+    for n in list(G.nodeDict.values()) :
         result.update(childEdges(n))
     return result
 
@@ -352,8 +352,8 @@ def equivalentGraphs(A,B) :
     """Returns True if SpliceGraphs A and B are equivalent; False otherwise.
     This is distinct from the SpliceGraph.__eq__ method as it ignores
     attributes that may be changed in the prediction process."""
-    Anodes = A.nodeDict.values()
-    Bnodes = B.nodeDict.values()
+    Anodes = list(A.nodeDict.values())
+    Bnodes = list(B.nodeDict.values())
     if len(Anodes) != len(Bnodes) : return False
     for n in Anodes :
         Aedges = childEdges(n)
@@ -370,7 +370,7 @@ def getFirstGraph(f, **args) :
     """Returns just the first splice graph found in a file."""
     annotate = getAttribute('annotate', False, **args)
     try :
-        result = SpliceGraphParser(f, **args).next()
+        result = next(SpliceGraphParser(f, **args))
         if annotate : result.annotate()
         return result
     except StopIteration :
@@ -409,8 +409,8 @@ def graphSubtract(A,B, **args) :
     result.minpos = A.minpos
     result.maxpos = A.maxpos
 
-    nodesA  = A.resolvedNodes() if resolvedOnly else A.nodeDict.values()
-    nodesB  = B.resolvedNodes() if resolvedOnly else B.nodeDict.values()
+    nodesA  = A.resolvedNodes() if resolvedOnly else list(A.nodeDict.values())
+    nodesB  = B.resolvedNodes() if resolvedOnly else list(B.nodeDict.values())
     subsetA = []
     for a in nodesA :
         try :
@@ -493,7 +493,7 @@ def updateLeaf(A, B, **args) :
     uniqueLeaf = getAttribute('uniqueLeaf', False, **args)
     mergeDict = {}
     for leaf in A.getLeaves() :
-        longer = [n for n in B.nodeDict.values() if n.acceptorEnd() == leaf.acceptorEnd() and len(n) > len(leaf)]
+        longer = [n for n in list(B.nodeDict.values()) if n.acceptorEnd() == leaf.acceptorEnd() and len(n) > len(leaf)]
         if not longer : continue
         if uniqueLeaf and len(longer) > 1 : continue
         maxLen  = max([len(n) for n in longer])
@@ -522,7 +522,7 @@ def updateRoot(A, B, **args) :
 
     mergeDict = {}
     for root in A.getRoots() :
-        longer = [n for n in B.nodeDict.values() if n.donorEnd() == root.donorEnd() and len(n) > len(root)]
+        longer = [n for n in list(B.nodeDict.values()) if n.donorEnd() == root.donorEnd() and len(n) > len(root)]
         if not longer : continue
         if uniqueRoot and len(longer) > 1 : continue
         maxLen  = max([len(n) for n in longer])
@@ -702,7 +702,7 @@ class SpliceGraphNode(object) :
         GFF attributes field.  For example:
                   ID=ei_27;Parent=ei_26;AltForm=Alt. 3',Retained Intron"""
         result = ''
-        for k in self.attrs.keys() :
+        for k in list(self.attrs.keys()) :
             if k == AS_KEY and not self.altFormSet : continue
             if k == ISO_KEY and not self.isoformSet : continue
 
@@ -957,7 +957,7 @@ class SpliceGraph(object) :
         try :
             # Look for another node with the same start/end positions
             tmpNode  = NullNode(start,end)
-            allNodes = self.nodeDict.values()
+            allNodes = list(self.nodeDict.values())
             idx      = allNodes.index(tmpNode)
             node     = allNodes[idx]
         except ValueError :
@@ -971,7 +971,7 @@ class SpliceGraph(object) :
     def addCodons(self, codonList, codonType) :
         """Adds codons to every node in the graph."""
         for codon in codonList :
-            for node in self.nodeDict.values() :
+            for node in list(self.nodeDict.values()) :
                 node.addCodon(codon, codonType)
 
     def addEdge(self, pid, cid) :
@@ -1002,7 +1002,7 @@ class SpliceGraph(object) :
         This is useful for example for converting a graph based on positions
         [0,n-1] for an environment that uses positions [1,n].
         """
-        for n in self.nodeDict.values() :
+        for n in list(self.nodeDict.values()) :
             n.start  += adjustment
             n.end    += adjustment
             n.minpos += adjustment
@@ -1014,7 +1014,7 @@ class SpliceGraph(object) :
     def altForms(self) :
         """Returns a set of all AS forms found in the graph."""
         result = set()
-        for n in self.nodeDict.values() :
+        for n in list(self.nodeDict.values()) :
             result.update(n.altFormSet)
         for x in result : assert(len(x) > 0)
         return result
@@ -1118,14 +1118,14 @@ class SpliceGraph(object) :
         result.attrs.update(self.attrs)
 
         # First pass: create nodes in graph
-        for n in self.nodeDict.values() :
+        for n in list(self.nodeDict.values()) :
             newNode = result.addNode(n.id, n.start, n.end)
             newNode.attrs.update(n.attrs)
             newNode.isoformSet     = set(n.isoformSet)
             newNode.attrs[ISO_KEY] = ','.join(newNode.isoformSet)
             
         # Second pass: create edges in graph
-        for n in self.nodeDict.values() :
+        for n in list(self.nodeDict.values()) :
             for c in n.children :
                 result.addEdge(n.id, c.id)
 
@@ -1133,8 +1133,8 @@ class SpliceGraph(object) :
 
     def __eq__(self, other) :
         """Returns true if two splice graphs are identical; false otherwise."""
-        nodes      = self.nodeDict.values()
-        otherNodes = other.nodeDict.values()
+        nodes      = list(self.nodeDict.values())
+        otherNodes = list(other.nodeDict.values())
         if len(nodes) != len(otherNodes) : return False
         for n in nodes :
             edges = childEdges(n)
@@ -1162,12 +1162,12 @@ class SpliceGraph(object) :
 
     def getAcceptors(self) :
         """Returns a list of distinct acceptor sites in the graph."""
-        result = set([acceptor(n) for n in self.nodeDict.values() if not n.isRoot()])
+        result = set([acceptor(n) for n in list(self.nodeDict.values()) if not n.isRoot()])
         return list(result)
 
     def getDonors(self) :
         """Returns a list of distinct donor sites in the graph."""
-        result = set([donor(n) for n in self.nodeDict.values() if not n.isLeaf()])
+        result = set([donor(n) for n in list(self.nodeDict.values()) if not n.isLeaf()])
         return list(result)
 
     def getNode(self, start, end) :
@@ -1176,7 +1176,7 @@ class SpliceGraph(object) :
         try :
             # Look for a node with the same start/end positions
             tmpNode  = NullNode(start,end)
-            allNodes = self.nodeDict.values()
+            allNodes = list(self.nodeDict.values())
             idx      = allNodes.index(tmpNode)
             return allNodes[idx]
         except ValueError :
@@ -1184,7 +1184,7 @@ class SpliceGraph(object) :
 
     def getLeaves(self) :
         """Returns a list of nodes that have no children."""
-        return [n for n in self.nodeDict.values() if not n.children]
+        return [n for n in list(self.nodeDict.values()) if not n.children]
 
     def getName(self) :
         """Central method for retrieving the name.  This is a temporary
@@ -1193,7 +1193,7 @@ class SpliceGraph(object) :
 
     def getRoots(self) :
         """Returns a list of nodes that have no parents."""
-        return [n for n in self.nodeDict.values() if not n.parents]
+        return [n for n in list(self.nodeDict.values()) if not n.parents]
 
     def gffString(self, node=None) :
         """Returns a GFF-formatted string representing the given graph feature."""
@@ -1315,7 +1315,7 @@ class SpliceGraph(object) :
 
     def resolvedNodes(self) :
         """Returns a list of all resolved nodes: those actually used in the graph."""
-        return [x for x in self.nodeDict.values() if not x.isUnresolved()]
+        return [x for x in list(self.nodeDict.values()) if not x.isUnresolved()]
 
     def setName(self, name) :
         """Provides a central method for storing the name in both places.
@@ -1355,12 +1355,12 @@ class SpliceGraph(object) :
         result   = SpliceGraph(newName, self.chromosome, self.strand)
         allNodes = self.resolvedNodes() + other.resolvedNodes()
         for node in allNodes :
-            newNode = result.addNode(idgen.next(), node.minpos, node.maxpos)
+            newNode = result.addNode(next(idgen), node.minpos, node.maxpos)
             for c in node.children :
-                cNode = result.addNode(idgen.next(), c.minpos, c.maxpos)
+                cNode = result.addNode(next(idgen), c.minpos, c.maxpos)
                 newNode.addChild(cNode)
             for p in node.parents :
-                pNode = result.addNode(idgen.next(), p.minpos, p.maxpos)
+                pNode = result.addNode(next(idgen), p.minpos, p.maxpos)
                 pNode.addChild(newNode)
             for iso in node.isoformSet :
                 newNode.addIsoform(iso)
@@ -1374,7 +1374,7 @@ class SpliceGraph(object) :
 
     def unresolvedNodes(self) :
         """Returns a list of all unresolved nodes in the graph."""
-        return [x for x in self.nodeDict.values() if x.isUnresolved()]
+        return [x for x in list(self.nodeDict.values()) if x.isUnresolved()]
 
     def upstreamOf(self, a, b) :
         """Returns true if a is upstream of b; false otherwise."""
@@ -1383,7 +1383,7 @@ class SpliceGraph(object) :
     def validate(self, halt=False) :
         """Returns None if the splicegraph is valid; otherwise returns a reason it is invalid."""
         reason     = None
-        allNodes   = self.nodeDict.values()
+        allNodes   = list(self.nodeDict.values())
         ## allNodes   = self.resolvedNodes()
         nodeSet    = set(allNodes)
         nodeList   = list(nodeSet)
@@ -1477,10 +1477,10 @@ class SpliceGraphParser(object) :
         """Iterator implementation."""
         return self
 
-    def next(self) :
+    def __next__(self) :
         """Iterator implementation."""
         try :
-            key = self.graphDict.keys()[self.graphId]
+            key = list(self.graphDict.keys())[self.graphId]
             self.graphId += 1
             return self.graphDict[key]
         except Exception :
@@ -1518,7 +1518,7 @@ class SpliceGraphParser(object) :
             try :
                 # Convert 'ID=ABC;Parent=X,Y,Z' into {'ID':'ABC', 'Parent':'X,Y,Z'}
                 attrs = dict([tuple(p.split('=')) for p in parts[-1].split(';') if p])
-            except Exception,eee :
+            except Exception as eee :
                 raise ValueError("Illegal attribute field '%s' at line %d in GFF file." % (parts[-1],lineNo))
 
             try :

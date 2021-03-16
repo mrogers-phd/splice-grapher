@@ -19,7 +19,7 @@ from SpliceGrapher.shared.utils import ezopen, bsearch, getAttribute
 from SpliceGrapher.predict.PredictedSites import ACCEPTOR, DONOR
 from PyML import *
 from PyML.classifiers.svm import loadSVM
-from sys import maxint as MAXINT
+from sys import maxsize as MAXINT
 import sys,os
 
 #==================
@@ -38,7 +38,7 @@ FIELDS        = [CLASS] + FEATURES
 FIELD_STRING  = ','.join(FIELDS)
 FIELD_FMT     = ','.join(['%f' for x in FEATURES])
 # Indexes to all features (add 1 to each since label is at 0)
-ALL_FEATURES  = range(1,len(FEATURES)+1)
+ALL_FEATURES  = list(range(1,len(FEATURES)+1))
 
 # Feature type: discrete or continuous (directs representation)
 DISCRETE_TAG   = 'discrete'
@@ -193,7 +193,7 @@ def clusterVariance(c) :
     mean    = c.avgDepth()
     N       = 0
     depthSS = 0.0
-    for k in c.depths.keys() :
+    for k in list(c.depths.keys()) :
         delta    = c.depths[k] - mean
         depthSS += delta*delta
         N       += 1
@@ -204,7 +204,7 @@ def clusterListDepth(clusters) :
     allDepths = {}
     for c in clusters :
         allDepths.update(c.depths)
-    return float(sum(allDepths.values()))/len(allDepths.keys())
+    return float(sum(allDepths.values()))/len(list(allDepths.keys()))
 
 def clusterListVariance(clusters) :
     if not clusters : return 0.0
@@ -213,7 +213,7 @@ def clusterListVariance(clusters) :
     for c in clusters :
         allDepths.update(c.depths)
     SS = 0.0
-    for k in allDepths.keys() :
+    for k in list(allDepths.keys()) :
         delta = allDepths[k]-mean
         SS   += delta*delta
     return float(SS)/len(allDepths)

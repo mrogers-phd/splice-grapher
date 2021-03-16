@@ -19,7 +19,7 @@
 Module that encapsulates a configuration for a splice-site dimer classifier.
 """
 from SpliceGrapher.shared.utils import getAttribute
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 import sys
 
 # Configuration section name

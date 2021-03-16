@@ -189,7 +189,7 @@ class ChromosomeSiteMap(object) :
             try :
                 siteType = SITE_TYPE_NAME[vals[5]]
             except KeyError :
-                raise ValueError('Invalid site-type code at line %d (was %s, should be %s)' % (ssCount, vals[5], '/'.join(SITE_TYPE_NAME.keys())))
+                raise ValueError('Invalid site-type code at line %d (was %s, should be %s)' % (ssCount, vals[5], '/'.join(list(SITE_TYPE_NAME.keys()))))
 
             pos    = int(vals[2]) + offset
             score  = float(vals[4])
@@ -209,8 +209,8 @@ class ChromosomeSiteMap(object) :
     def getAllsites(self, minpos=0, maxpos=10**10, minScore=0.0) :
         """Convenience method that returns all sites on both strands."""
         result = []
-        for sType in self.siteTypes.keys() :
-            for strand in self.siteTypes[sType].keys() :
+        for sType in list(self.siteTypes.keys()) :
+            for strand in list(self.siteTypes[sType].keys()) :
                 result += self.getSites(sType, strand, minpos, maxpos, minScore)
         return result
 
@@ -237,7 +237,7 @@ class ChromosomeSiteMap(object) :
 
         result = []
         if sType in self.siteDict :
-            result = [x for x in self.siteDict[sType][strand].keys() if minpos <= x <= maxpos and self.siteDict[sType][strand][x] >= minScore]
+            result = [x for x in list(self.siteDict[sType][strand].keys()) if minpos <= x <= maxpos and self.siteDict[sType][strand][x] >= minScore]
         result.sort()
         return result
 

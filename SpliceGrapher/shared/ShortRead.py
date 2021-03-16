@@ -284,7 +284,7 @@ class Read(object):
         self.strand = strand
         self.count  = 1
         self.code   = READ_CODE
-        self.id     = Read.id_gen.next()
+        self.id     = next(Read.id_gen)
 
     def __eq__(self, other):
         return self.chromosome == other.chromosome and self.strand == other.strand \
@@ -473,7 +473,7 @@ class Cluster(object):
     id_gen = idFactory('c_')
 
     def __init__(self, chromosome, pos, totDepth, id=None):
-        self.id          = id if id else Cluster.id_gen.next()
+        self.id          = id if id else next(Cluster.id_gen)
         self.chromosome  = chromosome.lower()
         self.minpos      = pos
         self.maxpos      = pos
@@ -513,7 +513,7 @@ class Cluster(object):
         dist  = end-start+1
         if dist <= 0:
             return 0
-        total = sum([self.depths[k] for k in self.depths.keys() if start <= k <= end])
+        total = sum([self.depths[k] for k in list(self.depths.keys()) if start <= k <= end])
         return float(total)/dist
 
     def contains(self, pos):

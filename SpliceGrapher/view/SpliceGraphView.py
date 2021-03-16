@@ -368,7 +368,7 @@ class SpliceGraphView(object) :
             return result
 
         # prepare for plotting
-        self.nodeY        = {}.fromkeys(self.graph.nodeDict.values(), -1)
+        self.nodeY        = {}.fromkeys(list(self.graph.nodeDict.values()), -1)
         self.skippedExons = set([])
 
         # Initialize nodes in main path, defined as

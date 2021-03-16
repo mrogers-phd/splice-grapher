@@ -78,7 +78,7 @@ def getAllPaths(G, **args):
     limit   = getAttribute('limit', None, **args)
 
     roots = set([r for r in G.getRoots() if not r.isUnresolved()])
-    for n in G.nodeDict.values():
+    for n in list(G.nodeDict.values()):
         for p in n.parents:
             if p.isRoot():
                 roots.add(p)
@@ -88,10 +88,10 @@ def getAllPaths(G, **args):
     memo  = {}
     paths = []
     if verbose:
-        print "Traversing %d roots in %s:" % (len(roots), G.getName())
+        print("Traversing %d roots in %s:" % (len(roots), G.getName()))
     for r in roots :
         if verbose:
-            print "  ", str(r)
+            print("  ", str(r))
         newpaths = getPaths(r, memo, **args)
         paths.extend(newpaths)
         if limit and len(paths) > limit:
@@ -123,14 +123,14 @@ def getPaths(node, memo, **args):
 def getLongestPath(G, verbose=False):
     """Returns the longest path through the graph, given as a list of node pointers."""
     roots = set([r for r in G.getRoots() if not r.isUnresolved()])
-    for n in G.nodeDict.values():
+    for n in list(G.nodeDict.values()):
         for p in n.parents:
             if p.isRoot():
                 roots.add(p)
     memo   = {}
     result = None
     if verbose:
-        print "getLongestPath traversing %d roots in %s:" % (len(roots), G.getName())
+        print("getLongestPath traversing %d roots in %s:" % (len(roots), G.getName()))
     for r in roots :
         path = getLongest(r, memo)
         if not result or (len(path) > len(result)):
@@ -141,11 +141,11 @@ def getLongest(node, memo, verbose=False):
     """Recursive method that returns the longest path from the given node."""
     if node in memo:
         if verbose:
-            print "getLongest returning memoized path for", str(node)
+            print("getLongest returning memoized path for", str(node))
         return memo[node]
     elif node.isLeaf():
         if verbose:
-            print "getLongest returning leaf node for", str(node)
+            print("getLongest returning leaf node for", str(node))
         result = SpliceGraphPath(node)
     else:
         result = None
@@ -157,6 +157,6 @@ def getLongest(node, memo, verbose=False):
         if not result:
             result = SpliceGraphPath(node)
         if verbose:
-            print "getLongest returning path of length", len(result)
+            print("getLongest returning path of length", len(result))
     memo[node] = result
     return result

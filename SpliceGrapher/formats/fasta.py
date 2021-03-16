@@ -109,8 +109,8 @@ class fasta_itr (object) :
     def __iter__(self) :
         return self
 
-    def next(self) :
-        return self.__itr.next()
+    def __next__(self) :
+        return next(self.__itr)
 
     def __getitem__(self,name) :
         return fasta_get_by_name(iter(self),name)
@@ -144,7 +144,7 @@ class fasta_slice (object) :
     def __iter__(self) :
         return self
 
-    def next(self) :
+    def __next__(self) :
         """
         Implementation of the iterator interface.
         """
@@ -163,7 +163,7 @@ class fasta_slice (object) :
             if not self.__foundFirst :
                 raise ValueError('did not find first record')
             return rec
-        rec = self.__itr.next()
+        rec = next(self.__itr)
 
         if self.__last is not None :
             if type(self.__first) == int :
@@ -236,7 +236,7 @@ class FastaRandomizer(object) :
     """
     def __init__(self, fastaFile) :
         self.records  = [rec for rec in fasta_itr(fastaFile)]
-        self.recRange = range(len(self.records))
+        self.recRange = list(range(len(self.records)))
 
     def randomRecords(self, n) :
         """

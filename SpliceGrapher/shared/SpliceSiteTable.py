@@ -35,7 +35,7 @@ class SpliceSiteTable(object):
             self.acceptors[c].setdefault(s,{})
             self.junctions[c].setdefault(s,{})
 
-            for iid in g.isoforms.keys():
+            for iid in list(g.isoforms.keys()):
                 exons = g.isoforms[iid].sortedExons()
                 for i in range(1,len(exons)):
                     d = exons[i-1].donor()
@@ -48,7 +48,7 @@ class SpliceSiteTable(object):
                     self.acceptors[c][s][a].add(g)
                     self.junctions[c][s][d][a] = True
 
-            for mid in g.mrna.keys():
+            for mid in list(g.mrna.keys()):
                 cds = g.mrna[mid].sortedExons()
                 for i in range(1,len(cds)):
                     d = cds[i-1].donor()
@@ -70,11 +70,11 @@ class SpliceSiteTable(object):
 
     def acceptorSites(self, chrom, strand):
         """Returns an unsorted list of all acceptors for the given chromosome and strand."""
-        return self.acceptors[chrom.lower()][strand.lower()].keys()
+        return list(self.acceptors[chrom.lower()][strand.lower()].keys())
 
     def donorSites(self, chrom, strand):
         """Returns an unsorted list of all donors for the given chromosome and strand."""
-        return self.donors[chrom.lower()][strand.lower()].keys()
+        return list(self.donors[chrom.lower()][strand.lower()].keys())
 
     def donorGenes(self, chrom, strand, d):
         """Returns all genes that contain the given donor site."""

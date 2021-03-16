@@ -52,7 +52,7 @@ class GeneView(object) :
         maxpos = max([g.maxpos for g in self.genes])
 
         # First define individual positions:
-        posRange = range(minpos,maxpos+1)
+        posRange = list(range(minpos,maxpos+1))
         area     = {}.fromkeys(posRange,None)
         for gene in self.genes :
             features = gene.exons + gene.cds

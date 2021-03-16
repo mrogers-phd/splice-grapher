@@ -41,7 +41,7 @@ class FeatureGroup(object) :
         return self.minpos < feature.maxpos and feature.minpos < self.maxpos
 
     def values(self) :
-        return self.group.values()
+        return list(self.group.values())
 
 class FeatureBundle(object) :
     """

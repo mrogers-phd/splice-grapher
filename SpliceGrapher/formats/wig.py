@@ -77,7 +77,7 @@ class WIGRecord(object) :
         for col in ALL_COLUMNS :
             try :
                 self.attrs[col] = parts[col]
-            except IndexError, ie :
+            except IndexError as ie :
                 raise ie
 
     def chromosome(self) :

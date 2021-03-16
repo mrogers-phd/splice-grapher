@@ -80,7 +80,7 @@ class FastaLoader(object) :
         if self.verbose : sys.stderr.write('Found %d FASTA records in %s\n' % (len(self.sequences), fastaPath))
 
     def keys(self) :
-        return self.sequences.keys()
+        return list(self.sequences.keys())
 
     def __len__(self) :
         return len(self.sequences)
@@ -97,7 +97,7 @@ class FastaLoader(object) :
         i = 0
         while i < len(ref) :
             last = min(i+width, len(ref))
-            print "%10d: %s" % (i+offset, ref[i:last])
+            print("%10d: %s" % (i+offset, ref[i:last]))
             if showMatches :
                 midstr = "%12s" % ' '
                 for j in range(i,last) :
@@ -105,10 +105,10 @@ class FastaLoader(object) :
                         midstr += "|"
                     else  :
                         midstr += " "
-                print midstr
+                print(midstr)
 
-            print "%8d: %s" % (i+offset, est[i:last])
-            print ""
+            print("%8d: %s" % (i+offset, est[i:last]))
+            print("")
             i += width
 
     def headerToSequenceID(self, header) :
@@ -170,7 +170,7 @@ class FastaLoader(object) :
         """
         Writes a multi-line representation of the given sequence to stdout.
         """
-        print self.sequenceString(seq, offset=offset, width=width)
+        print(self.sequenceString(seq, offset=offset, width=width))
 
     def subsequence(self, sequenceID, start, end, reverse=False) :
         """

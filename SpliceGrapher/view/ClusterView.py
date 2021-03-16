@@ -20,7 +20,7 @@ Module for displaying short read clusters within a Matplotlib figure.
 """
 from SpliceGrapher.shared.utils import *
 from matplotlib                 import patches
-from sys import maxint as MAXINT
+from sys import maxsize as MAXINT
 
 HEIGHT_MARGIN = 0.1 # 10%
 

@@ -245,7 +245,7 @@ def stringToRange(s):
         else:
             parts = [int(x) for x in r.split('-')]
             assert(len(parts) == 2)
-            result.update(range(parts[0], parts[1]+1))
+            result.update(list(range(parts[0], parts[1]+1)))
     return sorted(result)
 
 def substringAfter(s, tag):
@@ -372,7 +372,7 @@ class RandomListIterator(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         """Iterator implementation that returns a random value, with
         replacement, from a list."""
         i = self.rand.randint(0,self.limit)

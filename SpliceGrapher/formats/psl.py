@@ -22,7 +22,7 @@ from SpliceGrapher.SpliceGraph        import SpliceGraph, updateRoot, updateLeaf
 from SpliceGrapher.formats.GeneModel  import Exon
 from SpliceGrapher.shared.utils       import *
 from SpliceGrapher.predict.SpliceSiteValidator import *
-from sys import maxint
+from sys import maxsize
 
 def estsToSpliceGraph(geneName, recs, chromosome, **args) :
     """Method that creates a splice graph from a list of PSLRecord instances.  Single-exon
@@ -68,7 +68,7 @@ def estsToSpliceGraph(geneName, recs, chromosome, **args) :
         prev     = None
         for i in range(len(exons)) :
             exon = exons[i]
-            eid  = exonIds.next()
+            eid  = next(exonIds)
             node = subgraph.addNode(eid, exon.minpos, exon.maxpos)
             #assert(node.id == eid)
             node.addIsoform(r.Qname)
@@ -79,7 +79,7 @@ def estsToSpliceGraph(geneName, recs, chromosome, **args) :
         # are valid according to the given dimer dictionary
         goodSpliceSites = True
         if validator :
-            for e in subgraph.nodeDict.values() :
+            for e in list(subgraph.nodeDict.values()) :
                 if not e.isLeaf() :
                     goodSpliceSites &= validator.validDonor(chromosome, donor(e), strand)
                 if not e.isRoot() :
@@ -93,7 +93,7 @@ def estsToSpliceGraph(geneName, recs, chromosome, **args) :
         if verbose :
             ctr += 1
             sys.stderr.write('Graph %d (%s strand) from %s:\n' % (ctr,r.strand,r.Qname))
-            sys.stderr.write('    %s\n' % '\n    '.join(['%s'%x for x in subgraph.nodeDict.values()]))
+            sys.stderr.write('    %s\n' % '\n    '.join(['%s'%x for x in list(subgraph.nodeDict.values())]))
 
         if geneBounds :
             if subgraph.maxpos < geneMin or subgraph.minpos > geneMax :
@@ -193,7 +193,7 @@ class PSLRecord(object) :
     def __eq__(self,o) :
         try :
             return all([self.__dict__[f]==o.__dict__[f] for f in PSLRecord.FIELDS])
-        except AttributeError,e :
+        except AttributeError as e :
             raise Exception('Argument to PSLRecord.__cmp__(o) must be a PSLRecord instance. Exception: %s'%e)
 
     def __cmp__(self,o) :
@@ -202,7 +202,7 @@ class PSLRecord(object) :
             if c == 0 :
                 return cmp(self.Tstart,o.Tstart)
             return c
-        except AttributeError,e :
+        except AttributeError as e :
             raise Exception('Argument to PSLRecord.__cmp__(o) must be a PSLRecord instance. Exception: %s'%e)
 
     def __hash__(self) :
@@ -245,12 +245,12 @@ def psl_to_exons(psl, min_intron=0) :
     genome, so we ignore all insertions in the query sequence.  Exons that
     that flank introns smaller than the min_intron value will be merged."""
 
-    qry_coords = zip(psl.qstarts, [x+b for x,b in zip(psl.qstarts,psl.blksize)] )
-    qry_coords.extend(zip([x+b for x,b in zip(psl.qstarts[:-1],psl.blksize)], psl.qstarts[1:]))
+    qry_coords = list(zip(psl.qstarts, [x+b for x,b in zip(psl.qstarts,psl.blksize)] ))
+    qry_coords.extend(list(zip([x+b for x,b in zip(psl.qstarts[:-1],psl.blksize)], psl.qstarts[1:])))
     qry_coords.sort()
 
-    genm_coords = zip(psl.tstarts, [x+b for x,b in zip(psl.tstarts,psl.blksize)])
-    genm_coords.extend(zip([x+b for x,b in zip(psl.tstarts[:-1],psl.blksize)], psl.tstarts[1:]))
+    genm_coords = list(zip(psl.tstarts, [x+b for x,b in zip(psl.tstarts,psl.blksize)]))
+    genm_coords.extend(list(zip([x+b for x,b in zip(psl.tstarts[:-1],psl.blksize)], psl.tstarts[1:])))
     genm_coords.sort()
 
     if len(qry_coords) != len(genm_coords) :

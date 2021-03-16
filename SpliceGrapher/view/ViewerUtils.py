@@ -119,7 +119,7 @@ def plotSpliceJunctions(junctions, displayAxes, minpos, maxpos, **args) :
 
     return jctView.patchDict
 
-def plotXYGraph(X, Y, displayAxes, minpos=0, maxpos=sys.maxint, **args) :
+def plotXYGraph(X, Y, displayAxes, minpos=0, maxpos=sys.maxsize, **args) :
     """
     Renders an X-Y graph within the viewing area.  Assumes X values
     are sorted in ascending order.
@@ -139,10 +139,10 @@ def setXticks(minpos, maxpos, minTicks=4, maxTicks=10) :
     mark labels when positions exceed ~10^7
     """
     deltas = [1000000, 500000, 100000, 50000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10]
-    result = range(minpos,maxpos,10)
+    result = list(range(minpos,maxpos,10))
     for d in deltas :
         firstTick = d + d*int(int(minpos)/d)
-        result    = range(firstTick,maxpos,d)
+        result    = list(range(firstTick,maxpos,d))
         if len(result) >= minTicks : break
 
     # Remove every other tick label

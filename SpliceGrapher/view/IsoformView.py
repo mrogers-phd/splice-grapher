@@ -99,14 +99,14 @@ class IsoformView(SpliceGraphView) :
 
         # Identify all edges that skip an exon (if there are any)
         allEdges      = edgeSet(self.graph)
-        skippedExons  = [n for n in self.graph.nodeDict.values() if ES_ABBREV in n.altFormSet]
+        skippedExons  = [n for n in list(self.graph.nodeDict.values()) if ES_ABBREV in n.altFormSet]
         skippingEdges = set([])
         for skipped in skippedExons :
             skippingEdges.update([e for e in allEdges if containsNode(e,skipped)])
 
         keys       = sorted(self.level.keys())
         isoLengths = dict([(n,acceptor(self.isoformMap[n][0])) for n in self.isoformMap])
-        isoKeys    = isoLengths.keys()
+        isoKeys    = list(isoLengths.keys())
         if isoWeights :
             # Account for any isoforms missing from the dictionary
             for k in isoKeys :

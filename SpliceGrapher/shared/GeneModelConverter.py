@@ -39,7 +39,7 @@ def forceAddParent(child, parent):
 
 def mergeAdjacentNodes(g, minIntron):
     """Merges nodes when the intron between them is too short."""
-    nodes = g.nodeDict.values()
+    nodes = list(g.nodeDict.values())
     killList = []
     for n in nodes:
         if n.id in killList:
@@ -81,7 +81,7 @@ def removeNode(nodeList, nodeId):
 def removeDuplicateNodes(graph):
     """Removes duplicate nodes from a graph."""
     # Look for duplicate nodes
-    nodes   = graph.nodeDict.values()
+    nodes   = list(graph.nodeDict.values())
     nodeSet = set(nodes)
     if len(nodeSet) == len(nodes):
         return graph
@@ -89,7 +89,7 @@ def removeDuplicateNodes(graph):
     # Rebuild graph to eliminate duplicate nodes
     result = SpliceGraph(graph.getName(), graph.chromosome, graph.strand)
     idMap  = {}
-    for n in graph.nodeDict.values():
+    for n in list(graph.nodeDict.values()):
         rnode = result.addNode(n.id, n.minpos, n.maxpos)
         # Use addIsoform instead of set operations
         # because other things need to happen:
@@ -97,7 +97,7 @@ def removeDuplicateNodes(graph):
             rnode.addIsoform(form)
         idMap[n.id] = rnode.id
 
-    for n in graph.nodeDict.values():
+    for n in list(graph.nodeDict.values()):
         eid1 = idMap[n.id]
         for c in n.children:
             result.addEdge(eid1, idMap[c.id])
@@ -122,7 +122,7 @@ def geneModelToSpliceGraph(gene, **args):
 
     nodeSet = set()
     if useCDS:
-        for key in gene.mrna.keys():
+        for key in list(gene.mrna.keys()):
             nodeSet.update(gene.mrna[key].sortedExons())
     else:
         nodeSet.update(gene.exons)
@@ -137,14 +137,14 @@ def geneModelToSpliceGraph(gene, **args):
             badForms.update(exon.parents)
             continue
 
-        eid  = exonIds.next()
+        eid  = next(exonIds)
         node = graph.addNode(eid, exon.minpos, exon.maxpos)
         exonDict[exon_key] = node.id
 
         for p in exon.parents:
             node.addIsoform(p.id)
 
-    featureList = gene.mrna.values() if useCDS else gene.isoforms.values()
+    featureList = list(gene.mrna.values()) if useCDS else list(gene.isoforms.values())
     featureList = [f for f in featureList if f not in badForms]
     if not featureList:
         isoLen = len(gene.isoforms)

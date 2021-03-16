@@ -20,7 +20,7 @@ Module for manipulating SAM-formatted files.
 """
 from SpliceGrapher.shared.utils import ProgressIndicator, ezopen, getAttribute
 from SpliceGrapher.shared.ShortRead import *
-from sys import maxint as MAXINT
+from sys import maxsize as MAXINT
 import sys,re
 
 # Header tags
@@ -55,7 +55,7 @@ HEADER_SQ_LINE = '@SQ'
 # B -- Integer or numeric array
 VALID_VTYPES = ['A', 'i', 'f', 'Z', 'H', 'B']
 
-ALL_COLUMNS      = [QNAME, FLAG, RNAME, POS, MAPQ, CIGAR, MRNM, MPOS, ISIZE, SEQ, QUAL, TAGS] = range(12)
+ALL_COLUMNS      = [QNAME, FLAG, RNAME, POS, MAPQ, CIGAR, MRNM, MPOS, ISIZE, SEQ, QUAL, TAGS] = list(range(12))
 REQUIRED_COLUMNS = ALL_COLUMNS[:-1]
 INT_COLUMNS      = [FLAG, POS, MPOS, MAPQ]
 
@@ -229,7 +229,7 @@ def convertCigarString(tokens, requiredSize) :
         try :
             # Tokens must be an integer followed by a single character
             size = int(curr[:-1])
-        except ValueError,ve :
+        except ValueError as ve :
             raise ValueError('Unrecognized CIGAR string: "%s"' % s)
 
         if symbol == 'M' :
@@ -533,7 +533,7 @@ def getSamAlignments(samRecords, **args) :
             try :
                 code   = m[-1]
                 delta  = int(m[:-1])
-            except Exception, e :
+            except Exception as e :
                 sys.stderr.write('\n*** Error in SAM file at line %d ***\n' % indicator.ctr)
                 sys.stderr.write('Line: %s\n' % line)
                 raise e
@@ -595,7 +595,7 @@ def getSamDepths(samRecords, **args) :
             try :
                 code   = m[-1]
                 delta  = int(m[:-1])
-            except Exception, e :
+            except Exception as e :
                 sys.stderr.write('\n*** Error in SAM file at line %d ***\n' % indicator.ctr)
                 sys.stderr.write('Line: %s\n' % line)
                 raise e
@@ -791,7 +791,7 @@ def getSamReadData(samRecords, **args) :
             try :
                 code   = m[-1]
                 delta  = int(m[:-1])
-            except Exception, e :
+            except Exception as e :
                 sys.stderr.write('\n*** Error in SAM file: invalid CIGAR string (column 5) at line %d ***\n' % indicator.ctr)
                 sys.stderr.write('Invalid record: %s\n' % line)
                 sys.stderr.write('CIGAR string:   %s\n' % rec.cigar())
@@ -965,7 +965,7 @@ class SAMRecord(object) :
                 else :
                     self.attrs[col]  = parts[col]
                     self.vtypes[col] = 'A'
-            except IndexError, ie :
+            except IndexError as ie :
                 raise ValueError('Too few columns (%d<%d) in input record:\n%s' % (len(parts), len(REQUIRED_COLUMNS), s))
             col += 1
 

@@ -19,7 +19,7 @@
 Simple interface to X,Y data files.
 """
 from SpliceGrapher.shared.utils import *
-from sys import maxint as MAXINT
+from sys import maxsize as MAXINT
 
 def getXYData(f, **args) :
     """Loads X,Y value pairs from the given file and returns them as two lists."""
