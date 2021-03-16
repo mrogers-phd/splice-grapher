@@ -87,14 +87,6 @@ parser.add_option('-W', dest='width',    default=15,            help='Display wi
 parser.add_option('-S', dest='shrink',   default=False,         help='Shrink introns [default: %default]', action='store_true')
 parser.add_option('-X', dest='xrange',   default=False,         help='Use the same genomic position range for all plots [default: %default]', action='store_true')
 
-# Deprecated to simplify interface:
-#parser.add_option('-t', dest='titles',   default=None,          help='List of graph titles [default: %default]')
-#parser.add_option('-A', dest='adjust',   default=False,         help='Adjust graphs to match gene boundaries [default: %default]', action='store_true')
-#parser.add_option('-G', dest='grid',     default=False,         help='Add axis grids to plots [default: %default]', action='store_true')
-## parser.add_option('-U', dest='urmargin', default=0,             help='Margin for subsuming unresolved nodes into resolved exons [default: %default]', type='int')
-#parser.add_option('-l', dest='labels',   default=False,         help='Show exon labels on plots [default: %default]', action='store_true')
-#parser.add_option('--shrink-factor', dest='shrinkfactor', default=MIN_INTRON_SIZE, help='Factor for shrinking introns (-S option) [default: %default]', type='int')
-
 #==========================================================================
 # Process command-line options:
 opts, args   = parser.parse_args(sys.argv[1:])
@@ -160,7 +152,7 @@ allMinpos  = MAXINT
 allMaxpos  = 0
 origMinpos = MAXINT
 origMaxpos = 0
-for i in xrange(len(args)) :
+for i in range(len(args)) :
     f = args[i]
     if graphType[f] == FILE_TAG :
         g = getFirstGraph(f)

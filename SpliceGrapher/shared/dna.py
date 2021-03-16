@@ -37,28 +37,28 @@ COMPLEMENT = {'A':'T', 'C':'G', 'T':'A', 'G':'C', 'N':'N', 'Y':'R',
               'r':'y', 'u':'a', 's':'s', 'w':'w', 'k':'m', 'm':'k',
               'b':'v', 'd':'h', 'h':'d', 'v':'b' } 
 
-def complement(s) :
+def complement(s):
     """
     Returns the complement for the given sequence, retaining upper/lower case integrity.
     """
-    try :
+    try:
         return ''.join([COMPLEMENT[c] for c in s])
-    except KeyError, e :
+    except KeyError, e:
         raise ValueError("DNA sequence error")
 
-def reverseComplement(s) :
+def reverseComplement(s):
     """
     Returns the reverse complement for the given sequence.
     """
     return complement(s)[::-1]
 
-def randomDNA(n) :
+def randomDNA(n):
     """
     Returns a string of random DNA characters.
     """
     import random
     DNA    = 'ACGT'
     result = ''
-    for i in range(n) :
+    for i in range(n):
         result += DNA[random.randint(0,3)]
     return result

@@ -235,7 +235,7 @@ def getCommonFiles(plots, **args) :
     """Returns a set of files common to all directories given for a set of plots."""
     verbose = getAttribute('verbose', False, **args)
     result  = set([])
-    for i in xrange(len(plots)) :
+    for i in range(len(plots)) :
         if verbose : sys.stderr.write('Looking for files in %s\n' % plots[i].source_file)
         if i == 0 :
             result = set(getFileList(plots[i], **args))

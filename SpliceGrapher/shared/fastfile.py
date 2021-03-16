@@ -28,7 +28,7 @@ INT_TYPE       = 'int'
 CHAR_TYPE      = 'char'
 VALID_KEYTYPES = [INT_TYPE, CHAR_TYPE]
 
-class fastfile(object) :
+class fastfile(object):
     """
     Class that provides fast access to large files.  If the file is sorted
     by numeric keys, it can perform a binary search on keys in the file.
@@ -38,7 +38,7 @@ class fastfile(object) :
         keypos  - 0-based position where key appears in each record (default=0)
         keytype - type of key: int/char (default=fastfile.INT_TYPE)
     """
-    def __init__(self, path, **args) :
+    def __init__(self, path, **args):
         self.stream = open(path, 'r')
         # Find the last position in the file
         self.stream.seek(0, os.SEEK_END)
@@ -52,34 +52,34 @@ class fastfile(object) :
         self.keypos = getAttribute('keypos', 0, **args)
         self.keytype = getAttribute('keytype', INT_TYPE, **args)
 
-        if self.keytype not in VALID_KEYTYPES :
+        if self.keytype not in VALID_KEYTYPES:
             raise Exception("Invalid key type requested: %s" % self.keytype)
 
-    def close(self) :
+    def close(self):
         """Convenience wrapper for file stream's close()"""
         self.stream.close()
 
-    def getkey(self, line) :
+    def getkey(self, line):
         """Returns the key for the given line."""
-        try :
+        try:
             result = line.split(self.delim)[self.keypos]
-            if self.keytype == INT_TYPE :
+            if self.keytype == INT_TYPE:
                 return int(result)
-            else :
+            else:
                 return result
-        except IndexError :
+        except IndexError:
             raise IndexError("No key in position %d for '%s'" % (self.keypos, line))
-        except ValueError :
+        except ValueError:
             raise ValueError("Invalid key in position %d for '%s'" % (self.keypos, line))
 
-    def getline(self, pos) :
+    def getline(self, pos):
         """
         Returns the complete line that ends after the given file position.
         Stored file position is updated to the start of the next line.
         """
         self.stream.seek(pos)
         c = None
-        while c != NEWLINE and pos > 0 :
+        while c != NEWLINE and pos > 0:
             pos -= 1
             self.stream.seek(pos)
             c = self.stream.read(1)
@@ -88,20 +88,22 @@ class fastfile(object) :
         self.lastKnown = self.stream.tell()
         return result
 
-    def getlines(self, minkey, maxkey) :
+    def getlines(self, minkey, maxkey):
         """Returns all lines with keys between the min and max key values,
         or the end of the file, whichever comes first."""
         result = []
         line   = self.search(minkey)
         key    = self.getkey(line)
-        while key <= maxkey :
-            if key >= minkey : result.append(line)
+        while key <= maxkey:
+            if key >= minkey:
+                result.append(line)
             line = self.readline()
-            if not line : break
+            if not line:
+                break
             key  = self.getkey(line)
         return result
 
-    def linelen(self) :
+    def linelen(self):
         """Returns the length of the current line."""
         start = self.lastKnown
         self.skipline()
@@ -109,27 +111,27 @@ class fastfile(object) :
         self.setpos(start)
         return (end-start-1)
 
-    def locateFirstRecord(self) :
+    def locateFirstRecord(self):
         """Based on the key, performs a linear search through the file to find
         the first legitimate record.  Useful for files with headers (e.g., SAM format).
         Note: this is a linear search and thus slow."""
         # Find the first non-header record in the SAM file:
         looking = True
         self.firstRecPos = 0
-        while looking :
+        while looking:
             self.firstRecPos = self.lastKnown
             line = self.getline(self.firstRecPos)
-            try :
+            try:
                 key = self.getkey(line)
                 break
-            except Exception :
+            except Exception:
                 continue
 
-    def readline(self) :
+    def readline(self):
         """Convenience wrapper for file stream's readline()"""
         return self.stream.readline()
 
-    def search(self, key, lo=None, hi=None) :
+    def search(self, key, lo=None, hi=None):
         """
         Performs a binary search on a file, looking for the given key.  If the key given
         comes before the first key in the file, it will return the first key in the file.
@@ -137,17 +139,19 @@ class fastfile(object) :
         Note: if you wish to grab a set of records within a range, the 'lastKnown' class attribute
         will provide the starting position for the most recent record.
         """
-        if lo is None : lo = self.firstRecPos
-        if hi is None : hi = self.end-1
+        if lo is None:
+            lo = self.firstRecPos
+        if hi is None:
+            hi = self.end-1
 
-        if lo < 0 or hi < 0 :
+        if lo < 0 or hi < 0:
             raise IndexError("Negative file position specified: %d" % min(lo,hi))
-        elif lo > self.end or hi > self.end :
+        elif lo > self.end or hi > self.end:
             raise IndexError("File position beyond EOF: %d" % max(lo,hi))
 
-        if lo >= hi :
+        if lo >= hi:
             return self.getline(hi)
-        else :
+        else:
             midpt  = int(0.5*(lo+hi))
             lokey  = self.getkey(self.getline(lo))
             hikey  = self.getkey(self.getline(hi))
@@ -156,18 +160,18 @@ class fastfile(object) :
             # Note 1: midpoint file position may fall outside key range 
             # Note 2: calling getline more than once costs little
             #         and keeps the stored file position current
-            if midkey < lokey :
+            if midkey < lokey:
                 return self.getline(lo)
-            elif midkey > hikey :
+            elif midkey > hikey:
                 return self.getline(hi)
-            elif midkey > key :
+            elif midkey > key:
                 return self.search(key, lo, midpt)
-            elif midkey < key :
+            elif midkey < key:
                 return self.search(key, midpt, hi-1)
-            else :
+            else:
                 return self.getline(midpt)
 
-    def setpos(self, pos) :
+    def setpos(self, pos):
         """
         Sets the file pointer to the given position and updates the
         last known position at the same time.
@@ -175,19 +179,19 @@ class fastfile(object) :
         self.lastKnown = pos
         self.stream.seek(pos)
         
-    def skipline(self) :
+    def skipline(self):
         """Skips a line in the file."""
         c   = None
         pos = self.stream.tell()
-        while c != NEWLINE :
+        while c != NEWLINE:
             c = self.stream.read(1)
         self.setpos(self.stream.tell())
 
-    def substring(self, start, end) :
+    def substring(self, start, end):
         """Reads part of the current line from the start to the end position."""
-        if start > end :
+        if start > end:
             raise IndexError("Invalid substring specified (%d,%d)" % (start,end))
-        elif start < 0 or end < 0 :
+        elif start < 0 or end < 0:
             raise IndexError("Negative string position specified (%d,%d)" % (start,end))
 
         # skip to start position in current line

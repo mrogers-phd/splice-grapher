@@ -129,17 +129,17 @@ def positionalKmer(trainingSet, exonSize, intronSize, **args) :
 
     # If no mismatches are allowed the mismatch profile is all 0's
     if mismatches == 0 :
-        mismatchProfile = [0 for i in xrange(mink, maxk+1)]
+        mismatchProfile = [0 for i in range(mink, maxk+1)]
     elif acceptor :
         zeroStart        = max(0, intronSize-10)
-        mismatchProfile  = [mismatches for i in xrange(zeroStart)] + [0 for i in xrange(zeroStart,intronSize)]
+        mismatchProfile  = [mismatches for i in range(zeroStart)] + [0 for i in range(zeroStart,intronSize)]
         zeroEnd          = min(3, exonSize)
-        mismatchProfile += [0 for i in xrange(zeroEnd)] + [mismatches for i in xrange(zeroEnd,exonSize)]
+        mismatchProfile += [0 for i in range(zeroEnd)] + [mismatches for i in range(zeroEnd,exonSize)]
     else : # donor
         zeroStart        = max(0, exonSize-3)
-        mismatchProfile  = [mismatches for i in xrange(zeroStart)] + [0 for i in xrange(zeroStart,exonSize)]
+        mismatchProfile  = [mismatches for i in range(zeroStart)] + [0 for i in range(zeroStart,exonSize)]
         zeroEnd          = min(10, intronSize)
-        mismatchProfile += [0 for i in xrange(zeroEnd)] + [mismatches for i in xrange(zeroEnd,intronSize)]
+        mismatchProfile += [0 for i in range(zeroEnd)] + [mismatches for i in range(zeroEnd,intronSize)]
 
     return SequenceData(trainingSet, mismatchProfile=mismatchProfile, **args)
 

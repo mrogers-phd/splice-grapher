@@ -150,7 +150,7 @@ def acceptSAMRecord(s, counter, **args) :
 
     try :
         rec = SAMRecord(s)
-    except ValueError, ve :
+    except ValueError as ve :
         sys.stderr.write('\n*** Error in SAM file at line %d ***\n' % counter)
         sys.stderr.write('Line: %s\n' % s)
         parts = s.split('\t')
@@ -171,7 +171,7 @@ def acceptSAMRecord(s, counter, **args) :
         # Convert S,H,I and D tokens into M or N:
         try :
             newCigar = convertCigarString(tokens, len(rec.attrs[SEQ]))
-        except ValueError, ve :
+        except ValueError as ve :
             raise ve
         rec.attrs[CIGAR] = newCigar
         tokens = cigarTokens(newCigar)
@@ -304,7 +304,7 @@ def pysamChromosomeMap(pysamFile) :
     result = {}
     if HEADER_SQ_TAG in pysamFile.header :
         chromList = pysamFile.header[HEADER_SQ_TAG]
-        for i in xrange(len(chromList)) :
+        for i in range(len(chromList)) :
             result[str(i)] = chromList[i][HEADER_SN_TAG]
     return result
 
@@ -388,7 +388,7 @@ def pysamReadDepths(bamFile, chromosome, gene, **args) :
                 if tok[0] == BAM_CMATCH :
                     start = max(pos, loBound) - loBound
                     end   = min(upBound, pos+tok[1]) - loBound
-                    for i in xrange(start, end) :
+                    for i in range(start, end) :
                         result[i] += 1
                 pos += tok[1]
         else : # ungapped alignment
@@ -396,7 +396,7 @@ def pysamReadDepths(bamFile, chromosome, gene, **args) :
             nUngapped += 1
             start = max(r.pos+1, loBound) - loBound
             end   = min(r.pos+r.qlen+1, upBound) - loBound
-            for i in xrange(start, end+1) :
+            for i in range(start, end+1) :
                 result[i] += 1
 
     if verbose : sys.stderr.write('Loaded %d ungapped and %d spliced reads for %s\n' % (nUngapped, nSpliced, gene.id))
@@ -463,7 +463,7 @@ def pysamSpliceJunctions(pysamRecord, chrMap) :
     k      = 0
     chrom  = chrMap[str(pysamRecord.tid)]
     strand = pysamStrand(pysamRecord,tagDict)
-    for i in xrange(0,len(pos),2) :
+    for i in range(0,len(pos),2) :
         jct = SpliceJunction(chrom, pos[i], pos[i+1]+1, [exons[k],exons[k+1]], jctCode, strand)
         result.append(jct)
         k  += 1
@@ -607,7 +607,7 @@ def getSamDepths(samRecords, **args) :
 
             # Update depth for matches only
             if code == 'M' :
-                for i in xrange(prvPos, curPos) :
+                for i in range(prvPos, curPos) :
                     depths[c][i] += 1
             prvPos = curPos
 
@@ -805,7 +805,7 @@ def getSamReadData(samRecords, **args) :
 
             # Update depth for matches only
             if code == 'M' :
-                for i in xrange(prvPos, curPos) :
+                for i in range(prvPos, curPos) :
                     depths[c][i] += 1
                 if alignments :
                     align[c].append((prvPos,delta))
@@ -917,7 +917,7 @@ def recordToSpliceJunction(samRec, matches) :
     result = []
     exons  = [int(m[:-1]) for m in matches if m[-1]=='M']
     k      = 0
-    for i in xrange(0,len(pos),2) :
+    for i in range(0,len(pos),2) :
         jct = SpliceJunction(samRec.chromosome(), pos[i], pos[i+1]+1, [exons[k],exons[k+1]], jctCode, samRec.attrs[STRAND_TAG])
         result.append(jct)
         k  += 1

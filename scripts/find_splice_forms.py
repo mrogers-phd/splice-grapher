@@ -110,7 +110,7 @@ else :
                     graph  = geneModelToSpliceGraph(gene, useCDS=useCDS)
                 except KeyError :
                     continue
-            except ValueError, ve :
+            except ValueError as ve :
                 sys.stderr.write('Cannot build graph for gene %s: %s\n' % (gene.name, str(ve)))
                 continue
 

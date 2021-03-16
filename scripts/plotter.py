@@ -23,7 +23,6 @@ a sequence of plots to appear on one page.
 from SpliceGrapher.shared.utils       import *
 from SpliceGrapher.plot.PlotterConfig import *
 from optparse import OptionParser
-from sys import maxint as MAXINT
 import os,sys
 
 #==========================================================================
@@ -35,7 +34,7 @@ warnings.filterwarnings('ignore')
 def helpFormat(strings, offset="    ", count=6) :
     """Formats a list of strings for extended help."""
     result = ""
-    for i in xrange(0,len(strings),count) :
+    for i in range(0,len(strings),count) :
         if result : result += '\n'
         result += offset + ', '.join(strings[i:i+count])
     return result

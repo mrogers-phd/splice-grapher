@@ -57,7 +57,7 @@ class GeneView(object) :
         for gene in self.genes :
             features = gene.exons + gene.cds
             for f in features :
-                for i in xrange(f.minpos,f.maxpos+1) :
+                for i in range(f.minpos,f.maxpos+1) :
                     if i not in area :
                         raise KeyError('%s position %d is not within %d-%d\n' % (f, i, minpos, maxpos))
                     if AREA_VALUE[f.featureType] > AREA_VALUE[area[i]] :

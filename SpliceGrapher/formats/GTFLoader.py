@@ -172,7 +172,7 @@ class GTFLoader(object) :
             indicator.update()
             try :
                 rec   = GTF_Line(line.strip())
-            except ValueError, ve :
+            except ValueError as ve :
                 skipped += 1
                 continue
 

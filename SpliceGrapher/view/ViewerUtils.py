@@ -45,7 +45,7 @@ def plotClusters(clusters, displayAxes, minpos, maxpos, **args) :
     Renders a cluster plot within the viewing area.
     """
     prefix    = '' if 'prefix' not in args else args['prefix']+' '
-    depthView = ClusterView(clusters, displayAxes, xrange=(minpos,maxpos), **args)
+    depthView = ClusterView(clusters, displayAxes, range=(minpos,maxpos), **args)
     depthView.plot(**args)
     displayAxes.set_title('%sRead Clusters' % prefix)
 
@@ -73,7 +73,7 @@ def plotReadDepths(depths, displayAxes, minpos, maxpos, **args) :
     """
     Renders a read depth plot within the viewing area.
     """
-    depthView = ReadDepthView(depths, displayAxes, xrange=(minpos,maxpos), **args)
+    depthView = ReadDepthView(depths, displayAxes, range=(minpos,maxpos), **args)
     depthView.plot(**args)
 
     prefix = '' if 'prefix' not in args else args['prefix']+' '
@@ -147,7 +147,7 @@ def setXticks(minpos, maxpos, minTicks=4, maxTicks=10) :
 
     # Remove every other tick label
     if len(result) > maxTicks :
-        revised = [result[i] for i in xrange(0,len(result),2)]
+        revised = [result[i] for i in range(0,len(result),2)]
         result  = revised
 
     return result

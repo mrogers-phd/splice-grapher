@@ -83,13 +83,13 @@ def getGeneIntrons(gene, min_intron=4) :
 
     for isoform in gene.isoforms.values() :
         exons = isoform.sortedExons() # exons sorted according to strand
-        for i in xrange(1,len(exons)) :
+        for i in range(1,len(exons)) :
             intron = InferredIntron(chr, strand, exons[i-1].donor(), exons[i].acceptor())
             if len(intron) >= min_intron : result.add(intron)
 
     for mrna in gene.mrna.values() :
         cds = mrna.sortedExons() # exons inferred from CDS and sorted according to strand
-        for i in xrange(1,len(cds)) :
+        for i in range(1,len(cds)) :
             intron = InferredIntron(chr, strand, cds[i-1].donor(), cds[i].acceptor())
             if len(intron) >= min_intron : result.add(intron)
 

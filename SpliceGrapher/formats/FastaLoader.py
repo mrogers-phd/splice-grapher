@@ -100,7 +100,7 @@ class FastaLoader(object) :
             print "%10d: %s" % (i+offset, ref[i:last])
             if showMatches :
                 midstr = "%12s" % ' '
-                for j in xrange(i,last) :
+                for j in range(i,last) :
                     if ref[j] == est[j] :
                         midstr += "|"
                     else  :

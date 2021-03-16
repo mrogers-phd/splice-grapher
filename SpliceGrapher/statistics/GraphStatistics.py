@@ -100,8 +100,8 @@ class GraphStatistics(AbstractStatistics) :
         # Count inter-group connections by identifying nodes in
         # one group that are children of nodes in the other.
         eventCount = 0
-        for i in xrange(len(groups)-1) :
-            for j in xrange(i+1,len(groups)) :
+        for i in range(len(groups)-1) :
+            for j in range(i+1,len(groups)) :
                 A     = groups[i]
                 B     = groups[j]
                 Akids = set([c for n in A for c in n.children])

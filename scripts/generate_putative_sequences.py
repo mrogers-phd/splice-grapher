@@ -232,7 +232,7 @@ for c in chromList :
         try :
             paths = getAllPaths(graph, limit=opts.seqlimit)
             paths.sort()
-        except ValueError, ve :
+        except ValueError as ve :
             tooLong += 1
             continue
 

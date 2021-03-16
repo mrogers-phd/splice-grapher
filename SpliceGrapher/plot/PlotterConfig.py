@@ -20,7 +20,7 @@ Module that encapsulates a configuration for a meta-plotter.
 """
 from SpliceGrapher.shared.utils import getAttribute
 from SpliceGrapher.shared.adjust import MIN_INTRON_SIZE
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 import re, os
 
 ENV_MATCH = re.compile('\${\w\w*}')
@@ -252,7 +252,7 @@ class SinglePlotConfig(object) :
                 return parseEnvironmentVars(value)
             else : # STRING_TAGS
                 return value
-        except ValueError, ve :
+        except ValueError as ve :
             raise ValueError('Invalid assignment in config file: %s is %s, should be %s\n' % (tag, value, TAG_TYPE[tag]))
 
     def instantiate(self) :

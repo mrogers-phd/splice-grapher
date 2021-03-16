@@ -230,7 +230,7 @@ if opts.splicegraphs :
         indicator.update()
         try :
             graph = getFirstGraph(f.strip())
-        except ValueError, ve :
+        except ValueError as ve :
             sys.stderr.write('Warning: %s\n' % ve)
             continue
         if graph.isEmpty() : continue

@@ -213,7 +213,7 @@ for line in ezopen(graphList) :
                     last    = r.pos() + len(r.query()) - 1
                     pairMin = min(pairMin, r.pos())
                     pairMax = max(pairMax, last)
-                coverage.update(xrange(pairMin,pairMax+1))
+                coverage.update(range(pairMin,pairMax+1))
 
             # Find unresolved nodes that overlap the range
             for n in transcriptPseudoNodes :
@@ -221,7 +221,7 @@ for line in ezopen(graphList) :
                     # No overlaps used for first/last node:
                     loOffset = 0 if n == transcriptPseudoNodes[0] else opts.min_overlap
                     hiOffset = 0 if n == transcriptPseudoNodes[-1] else opts.min_overlap+1
-                    missingCoverage = set(xrange(n.minpos-loOffset, n.maxpos+hiOffset)) - coverage
+                    missingCoverage = set(range(n.minpos-loOffset, n.maxpos+hiOffset)) - coverage
                     if missingCoverage : continue
                     resolvedNodeSet.add(n.node)
 

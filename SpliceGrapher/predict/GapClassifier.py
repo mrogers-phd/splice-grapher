@@ -228,7 +228,7 @@ def gapStatistics(gap, sitePredictor, nonunique, chrom, strand) :
 def gapStatisticsString(gap, sitePredictor, nonunique, chrom, strand) :
     """Returns a comma-delmited string of values associate with a gap."""
     values       = gapStatistics(gap, sitePredictor, nonunique, chrom, strand)
-    formats      = ['%f' for i in xrange(len(values))]
+    formats      = ['%f' for i in range(len(values))]
     formatString = ','.join(formats)
     return formatString % tuple(values)
 
@@ -299,7 +299,7 @@ def gapStatisticsToFeatures(gap, sitePredictor, nonunique, chrom, strand, **args
             amin += 1
 
     if nonunique :
-        for pos in xrange(gap.minpos, gap.maxpos) :
+        for pos in range(gap.minpos, gap.maxpos) :
             if nonunique[pos] : nuCount += 1
 
     # Determine the minimum possible intron size that might contain a gap:

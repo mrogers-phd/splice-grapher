@@ -57,7 +57,7 @@ class XYGraphView(object) :
             minHeight = yRange/40.0
             plotX     = []
             plotY     = []
-            for i in xrange(len(self.X)) :
+            for i in range(len(self.X)) :
                 if self.X[i] < self.minpos : continue
                 if self.X[i] > self.maxpos : break
                 if abs(self.Y[i]) > minHeight :
@@ -65,7 +65,7 @@ class XYGraphView(object) :
                     plotY.append(self.Y[i])
 
             # Leave about 1/4 the distance between X positions as a gap between bars
-            delta    = min([self.X[i]-self.X[i-1] for i in xrange(1,len(self.X))])
+            delta    = min([self.X[i]-self.X[i-1] for i in range(1,len(self.X))])
             barWidth = 2*0.75*delta
             p1 = self.axis.bar(plotX, plotY, barWidth, ec=color, fc=color)
             self.axis.plot([self.minpos,self.maxpos], [0.0,0.0], linestyle='solid', color=color, linewidth=1.0)

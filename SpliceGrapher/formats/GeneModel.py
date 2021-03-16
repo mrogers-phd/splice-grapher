@@ -405,7 +405,7 @@ class Isoform(BaseFeature) :
         result   = []
         # Always sort in ascending order by position
         exonList = sorted(self.exons)
-        for i in xrange(len(exonList)) :
+        for i in range(len(exonList)) :
             exon = exonList[i]
             result.append(exon.gtfString(self.id, self.parent, i+1))
         return result
@@ -588,7 +588,7 @@ class mRNA(Isoform) :
 
         # Always sort in ascending order by position
         cdsList = sorted(self.cds)
-        for i in xrange(len(cdsList)) :
+        for i in range(len(cdsList)) :
             c = cdsList[i]
             result.append(c.gtfString(self.id, self.parent, i+1))
 
@@ -613,7 +613,7 @@ class mRNA(Isoform) :
         minintron = getAttribute('minintron', 2, **args)
         cdsList   = self.sortedCDS()
         result    = []
-        for i in xrange(len(cdsList)) :
+        for i in range(len(cdsList)) :
             cds  = cdsList[i]
             if len(result) > 0 and abs(cds.start() - result[-1].end()) < minintron :
                 prev       = result[-1]
@@ -766,13 +766,13 @@ class Gene(BaseFeature) :
         result = {}
         for iid in self.isoforms.keys() :
             exons = self.isoforms[iid].sortedExons()
-            for i in xrange(1,len(exons)) :
+            for i in range(1,len(exons)) :
                 key = (exons[i-1].end(), exons[i].start())
                 result[key] = 1
 
         for mid in self.mrna.keys() :
             cds = self.mrna[mid].sortedExons()
-            for i in xrange(1,len(cds)) :
+            for i in range(1,len(cds)) :
                 key = (cds[i-1].end(), cds[i].start())
                 result[key] = 1
 
@@ -791,7 +791,7 @@ class Gene(BaseFeature) :
         for iid in self.isoforms.keys() :
             iso   = self.isoforms[iid]
             exons = sorted(iso.exons, reverse=(self.strand=='-'))
-            for i in xrange(1,len(exons)) :
+            for i in range(1,len(exons)) :
                 duple = (exons[i-1].donor(), exons[i].acceptor())
                 result[duple] = 1
         return result.keys()
@@ -849,7 +849,7 @@ class Gene(BaseFeature) :
 
                 eCtr = 0
                 cCtr = 0
-                for i in xrange(len(allExons)) :
+                for i in range(len(allExons)) :
                     item = allExons[i]
                     if item.featureType == EXON_TYPE :
                         eCtr += 1
@@ -1190,7 +1190,7 @@ class GeneModel(object) :
             parts  = fullString.split(d)
             result = []
             # most-to-least specific: 'a-b-c-d' --> ['a-b-c', 'a-b', 'a'] or 'a,b,c' --> ['a,b', 'a']
-            for i in xrange(len(parts)-1,0,-1) :
+            for i in range(len(parts)-1,0,-1) :
                 result.append(d.join(parts[:i]))
             return result
 

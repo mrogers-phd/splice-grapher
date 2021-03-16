@@ -194,7 +194,7 @@ for fastqFile in firstFiles + secondFiles :
 
 if secondFiles :
     bwaLog = open('bwa_pe.log','w')
-    for i in xrange(len(firstFiles)) :
+    for i in range(len(firstFiles)) :
         file1    = firstFiles[i]
         file2    = secondFiles[i]
         alnFile1 = getBWAAlnFileName(file1)
@@ -216,7 +216,7 @@ if secondFiles :
 
 else : # single-end reads
     bwaLog = open('bwa_se.log','w')
-    for i in xrange(len(firstFiles)) :
+    for i in range(len(firstFiles)) :
         file1    = firstFiles[i]
         alnFile1 = getBWAAlnFileName(file1)
         prefix   = 'single_%d' % (i+1)

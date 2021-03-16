@@ -135,7 +135,7 @@ class fasta_slice (object) :
         elif type(first) == type('') :
             self.__current = None
         else :
-            raise ValueError, 'bad first'
+            raise ValueError('bad first')
 
         self.__foundFirst = False
         if self.__first == 0 or self.__first == '' :
@@ -161,7 +161,7 @@ class fasta_slice (object) :
                         break
                     self.__current = rec.header
             if not self.__foundFirst :
-                raise ValueError, 'did not find first record'
+                raise ValueError('did not find first record')
             return rec
         rec = self.__itr.next()
 

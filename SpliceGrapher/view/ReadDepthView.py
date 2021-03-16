@@ -113,7 +113,7 @@ class ReadDepthView(object) :
         #--------------------------
         if xLabels :
             bbox = dict(facecolor='lightgrey',edgecolor='lightgrey')
-            for i in xrange(1,len(Y)-1) :
+            for i in range(1,len(Y)-1) :
                 if Y[i] > 0 and Y[i-1] == 0 :
                     self.axis.text(X[i], maxY, '%d'%X[i], size='xx-small', ha='center', va='center', bbox=bbox)
                 elif Y[i] == 0 and Y[i-1] > 0 :

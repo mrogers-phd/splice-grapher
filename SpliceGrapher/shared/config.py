@@ -21,11 +21,12 @@ Establish default values used by all modules.
 from SpliceGrapher.shared.utils import configMap, findFile, getEnvironmentValue
 import os
 
-def getMapValue(cfgMap, section, name, default=None) :
-    if not cfgMap : return default
-    try :
+def getMapValue(cfgMap, section, name, default=None):
+    if not cfgMap:
+        return default
+    try:
         return cfgMap[section][name]
-    except KeyError :
+    except KeyError:
         return default
 
 SG_CONFIG     = 'SpliceGrapher.cfg'
@@ -64,8 +65,10 @@ SG_GENE_MODEL = getMapValue(cfgMap, SG_SECTION, SG_GENE_MODEL_NAME)
 SG_TEMP_DIR   = getMapValue(cfgMap, SG_SECTION, SG_TEMP_DIR_NAME)
 SG_SS_PRED    = getMapValue(cfgMap, SG_SECTION, SG_SS_PRED_NAME)
 
-if not SG_FASTA_REF  : SG_FASTA_REF  = getEnvironmentValue('SG_FASTA_REF')
-if not SG_GENE_MODEL : SG_GENE_MODEL = getEnvironmentValue('SG_GENE_MODEL')
+if not SG_FASTA_REF:
+    SG_FASTA_REF  = getEnvironmentValue('SG_FASTA_REF')
+if not SG_GENE_MODEL:
+    SG_GENE_MODEL = getEnvironmentValue('SG_GENE_MODEL')
 
 # Load training key/value pairs directly from the configuration file
 TRAIN_ACCEPT  = cfgMap[TRAIN_ACC_SEC] if TRAIN_ACC_SEC in cfgMap else {}
@@ -73,9 +76,9 @@ TRAIN_REJECT  = cfgMap[TRAIN_REJ_SEC] if TRAIN_REJ_SEC in cfgMap else {}
 
 # Load mapping between GFF3 chromosome ids and FASTA ids:
 SG_FASTA_ID = {}
-try :
+try:
     SG_FASTA_ID = cfgMap[SEQ_MAP_SEC]
-except Exception :
+except Exception:
     pass
 # Map IDs both ways:
 SG_GFF3_ID  = dict([(SG_FASTA_ID[k],k) for k in SG_FASTA_ID])

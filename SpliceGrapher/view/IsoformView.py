@@ -130,7 +130,7 @@ class IsoformView(SpliceGraphView) :
             level += 1
             nodes = self.isoformMap[formName]
 
-            for i in xrange(len(nodes)) :
+            for i in range(len(nodes)) :
                 node       = nodes[i]
                 Ypos       = offset + level*self.trackHeight()
                 #assert(Ypos >= 0)

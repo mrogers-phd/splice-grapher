@@ -11,9 +11,9 @@ PYML_REQUIRED       = '0.7.14'
 #functions for showing errors and warnings (lifted from the pytables setup script)
 def _print_admonition(kind, head, body):
     tw = textwrap.TextWrapper(initial_indent='   ', subsequent_indent='   ')
-    print ".. %s:: %s" % (kind.upper(), head)
+    print(".. %s:: %s" % (kind.upper(), head))
     for line in tw.wrap(body):
-        print line
+        print(line)
 
 def print_warning(head, body=''):
     _print_admonition('warning', head, body)

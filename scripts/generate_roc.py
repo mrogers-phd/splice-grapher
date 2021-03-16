@@ -90,9 +90,9 @@ def roc(Y, givenY, decisionFunc, n = None, targetClass = 1, normalize = True) :
     numTP = numpy.sum(numpy.equal(givenY, targetClass))
     
     if normalize : 
-        for i in xrange(len(tp)):
+        for i in range(len(tp)):
             if tp[-1] > 0 : tp[i] /= float(numTP)
-        for i in xrange(len(fp)) :
+        for i in range(len(fp)) :
             if fp[-1] > 0 : fp[i] /= float(fp[-1])
 
         area = numpy.sum(tp) / len(tp)
@@ -146,9 +146,9 @@ def plotROC(res, fileName = None, **args) :
 
     stride = int(max(1, float(len(rocTP)) / float(numPoints)))
     if stride > 1 :
-        rocTP = [rocTP[i] for i in xrange(0,len(rocTP), stride)]
-        rocFP = [rocFP[i] for i in xrange(0,len(rocFP), stride)]        
-        rocDF = [rocDF[i] for i in xrange(0,len(rocDF), stride)]        
+        rocTP = [rocTP[i] for i in range(0,len(rocTP), stride)]
+        rocFP = [rocFP[i] for i in range(0,len(rocFP), stride)]        
+        rocDF = [rocDF[i] for i in range(0,len(rocDF), stride)]        
 
     import matplotlib
     if fileName is not None :
@@ -187,7 +187,7 @@ def plotROC(res, fileName = None, **args) :
     # Use first TP value that exceeds each key point
     if keyPoints :
         for val in keyPoints :
-            higher = [i for i in xrange(len(rocTP)) if rocTP[i] >= val]
+            higher = [i for i in range(len(rocTP)) if rocTP[i] >= val]
             if higher :
                 i     = higher[0]
                 lines = pylab.plot([0,rocFP[i],rocFP[i]], [rocTP[i],rocTP[i],0] , '--', linewidth = 1)
@@ -198,7 +198,7 @@ def plotROC(res, fileName = None, **args) :
 
     if zeroDF :
         # Add a marker where DF value is 0
-        smallDFidx = [i for i in xrange(len(rocTP)) if rocDF[i] <= 0]
+        smallDFidx = [i for i in range(len(rocTP)) if rocDF[i] <= 0]
         if smallDFidx :
             i     = smallDFidx[0]
             lines = pylab.plot([0,rocFP[i],rocFP[i]], [rocTP[i],rocTP[i],0] , '-k', linewidth = 1)

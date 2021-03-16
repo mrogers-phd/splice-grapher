@@ -92,7 +92,7 @@ def classifyGenes(classifiers, geneModel, seqDict, **args) :
     else :
         positionRange = [0, len(seq)]
 
-    for i in xrange(len(genes)) :
+    for i in range(len(genes)) :
         # Note that we may include a gene that starts before the given range or that
         # ends after the range.  By allowing overlaps we ensure that all genes will
         # be covered, even if some predictions might be duplicated.
@@ -159,7 +159,7 @@ def classifySequence(chrom, strand, classifiers, outStream, **args) :
     hideStdout()
 
     k = 0 # k, for'kluster' index
-    for i in xrange(minpos, maxpos) :
+    for i in range(minpos, maxpos) :
         if clusters :
             # Use clusters to direct classification:
             while i > clusters[k].maxpos :
