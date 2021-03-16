@@ -1,0 +1,29 @@
+Minimum Requirements
+--------------------
+    * Python 2.7
+
+Visualization Module Requirements
+---------------------------------
+    * Matplotlib 2.1.0 or higher.
+
+Classification Module Requirements
+----------------------------------
+    * PyML 0.7.14 or higher.
+
+
+Installation
+------------
+Download tarball and unpack:
+
+    tar -xfz SpliceGrapher-0.2.7.tar.gz
+    cd SpliceGrapher-0.2.7
+
+You can carry out a standard installation.  If you wish to specify a
+separate directory for the command-line scripts, you can do so using
+the --install-scripts option.
+
+For example, if the modules are installed in /mystuff/lib/python/SpliceGrapher-0.2.7
+and you want the scripts in /usr/bin (e.g., /usr/bin/selectModel.py), then use:
+
+    python setup.py install --home=/mystuff --install-scripts=/usr/bin
+

@@ -1,0 +1,81 @@
+SpliceGrapher - predicting splice graphs from diverse evidence
+Mark F. Rogers
+rogersma@cs.colostate.edu
+Version 0.2.7 released 
+
+
+Description
+===========
+SpliceGrapher is a Python-based scripting tool that uses gene models, RNA-Seq data
+and ESTs to predict splice graphs that capture in a single structure all the ways
+in which a gene's exons may be assembled.  In a splice graph, a gene's exons are
+depicted as vertices and introns are depicted as edges between them.  The compact
+structure allows researchers to visualize a gene's AS patterns more easily than by
+examining separate transcripts.
+
+SpliceGrapher includes modules that may be incorporated anywhere in an RNA-Seq
+analysis pipeline from initial alignment to final splice graph prediction.  The
+package includes modules for constructing a database of known, recombined and
+predicted splice-junction sequences that may be used with ungapped short-read
+alignment algorithms such as MAQ, BowTie or PASS.  The prediction modules are
+able to incorporate gene models in GFF3 format, RNA-Seq alignments in SAM format
+or EST alignments in PSL format.  The viewing modules are able to read these
+same files to produce plots that depict a predicted graph along with the evidence
+SpliceGrapher used to produce it.
+
+Currently SpliceGrapher supports RNA-Seq alignments in SAM, BED and WIG formats,
+EST alignments in PSL format and Cufflinks transcript descriptions in GTF format.
+
+
+Installation
+============
+Only Unix/Linux/OS-X is supported.
+
+Requirements:
+   matplotlib http://matplotlib.sourceforge.net     (version 2.1.0 or higher)
+   PyML       http://sourceforge.net/projects/PyML  (version 0.7.14 or higher)
+
+A setup.py script is provided so installation follows the standard python idiom:
+
+>>> python setup.py build
+>>> python setup.py install
+
+To install in a different directory than the system default, use
+
+>>> python setup.py install --home=/my/python/packages
+
+You may also install the stand-alone scripts in their own separate directory using
+the format:
+
+>>> python setup.py install --home=/my/python/packages --install-scripts=/my/python/scripts
+
+
+Updating paths
+==================
+Before you run SpliceGrapher scripts, you will want to add the correct path to your
+PATH environment variable.  By default this will be the /bin directory directly under
+the main installation directory.  If you chose a different script path using the
+--install-scripts option, then use that path instead.
+
+If you used '--home=' to specify a home directory other than the default, you must
+ensure that it is included in your PYTHONPATH directory before you try to access
+SpliceGrapher's modules from python.
+
+
+Running Examples
+================
+The 'examples' subdirectory of the distribution contains example data and a shell script
+for creating splice graphs for the example data.  To test your installation, simply
+run the script:
+
+>>> cd examples
+>>> run_tests.sh
+
+This script also provides examples to get you started using the SpliceGrapher Python
+scripts with your own data.
+
+
+Documentation
+=============
+User Guide - doc/userguide.pdf
+Examples - SpliceGrapher/examples

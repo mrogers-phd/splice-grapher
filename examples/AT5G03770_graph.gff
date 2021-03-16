@@ -1,0 +1,12 @@
+chr5	SpliceGraph	graph	995160	997848	.	+	.	ID=AT5G03770;Name=AT5G03770;Note=protein_coding_gene
+chr5	SpliceGraph	parent	995160	995383	.	+	.	ID=AT5G03770_1;Isoforms=AT5G03770.1;StartCodon=995191
+chr5	SpliceGraph	child	995515	995608	.	+	.	ID=AT5G03770_2;Parent=AT5G03770_1;Isoforms=AT5G03770.1
+chr5	SpliceGraph	child	997158	997277	.	+	.	ID=AT5G03770_10;Parent=AT5G03770_9;Isoforms=AT5G03770.1
+chr5	SpliceGraph	child	995826	995948	.	+	.	ID=AT5G03770_4;Parent=AT5G03770_3;Isoforms=AT5G03770.1
+chr5	SpliceGraph	child	996779	996876	.	+	.	ID=AT5G03770_8;Parent=AT5G03770_7;Isoforms=AT5G03770.1
+chr5	SpliceGraph	child	996042	996161	.	+	.	ID=AT5G03770_5;Parent=AT5G03770_4;Isoforms=AT5G03770.1
+chr5	SpliceGraph	child	996242	996320	.	+	.	ID=AT5G03770_6;Parent=AT5G03770_5;Isoforms=AT5G03770.1
+chr5	SpliceGraph	child	996459	996575	.	+	.	ID=AT5G03770_7;Parent=AT5G03770_6;Isoforms=AT5G03770.1
+chr5	SpliceGraph	child	996977	997070	.	+	.	ID=AT5G03770_9;Parent=AT5G03770_8;Isoforms=AT5G03770.1
+chr5	SpliceGraph	child	997360	997848	.	+	.	ID=AT5G03770_11;Parent=AT5G03770_10;EndCodon=997620;Isoforms=AT5G03770.1
+chr5	SpliceGraph	child	995710	995752	.	+	.	ID=AT5G03770_3;Parent=AT5G03770_2;Isoforms=AT5G03770.1

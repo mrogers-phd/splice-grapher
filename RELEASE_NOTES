@@ -1,0 +1,117 @@
+-------------------
+SpliceGrapher-0.2.7
+-------------------
+ * Added '--mindepth' option to predict_graphs.py, to enforce
+   a minimum read depth for predicting AS events.
+ * Modified scripts to ignore pysam installation if there
+   are bugs in pysam imports.
+
+-------------------
+SpliceGrapher-0.2.6
+-------------------
+ * Added genewise_statistics.py to generate tables of AS
+   events per gene.
+
+-------------------
+SpliceGrapher-0.2.5
+-------------------
+ * Converted ksh scripts to bash to eliminate need for users
+   to install ksh.
+
+-------------------
+SpliceGrapher-0.2.4
+-------------------
+ * Added SpliceGrapher depths files as an alternative to SAM
+   files to improve performance and SAM/BAM flexibility.
+
+-------------------
+SpliceGrapher-0.2.3
+-------------------
+ * Added a new pipeline (psginfer_pipeline.py) that can predict
+   transcripts from splice graphs using PSGInfer.
+ * Now retains start/stop codon locations from gene models.
+ * SAM module can now handle more complex CIGAR strings that
+   represent multi-exon reads, hard clipping and soft clipping.
+ * Added an extended tutorial (RNA-Seq-tutorial.tgz) to
+   provide a more comprehensive RNA-Seq analysis example.
+
+-------------------
+SpliceGrapher-0.2.2
+-------------------
+ * Initial "SpliceGrapherXT" release
+ * Added a new realignment procedure (realignment_pipeline.py)
+   that can resolve exons not defined in initial predictions.
+ * Added a new pipeline (isolasso_pipeline.py) that can predict
+   transcripts from splice graphs using IsoLasso.
+ * Fixed defects in GTF processing.
+ * Fixed defects in SAM processing related to CIGAR strings.
+
+-------------------
+SpliceGrapher-0.2.1
+-------------------
+ * Added a new predict_graphs.py script that can predict
+   splice graphs genome-wide or chromosome-wide (see User's
+   Guide for more information).
+ * Improved GTF modules to read Cufflinks output files as well
+   as most gene model files from the ENSEMBL, UCSC or iGenome websites.
+ * Added highlighting feature for read depth figures: positions
+   within the highlight region are colored red.
+ * Added highlighting for acceptor and donor sites in splice
+   junction figures.
+
+-------------------
+SpliceGrapher-0.2.0
+-------------------
+ * Second significant release marks a move toward simplifying the
+   filtering and prediction process for users to make SpliceGrapher
+   easier for biologists to use right away.
+ * Simplified the use model for filtering SAM files by providing
+   pre-built classifiers along with a new tool, sam_filter.py
+ * Revised prediction algorithm is much simpler and faster than
+   previous versions.
+ * Package now handles gene models in either GTF or GFF3 format.
+ * Added environment variables SG_GENE_MODEL and SG_FASTA_REF as
+   an alternative to using SpliceGrapher configuration files.
+ * Replaced the old documentation with a new Quick Start guide
+   and a User's Guide that includes a brief tutorial.
+
+-------------------
+SpliceGrapher-0.1.0
+-------------------
+ * First significant release coincides with SpliceGrapher publication
+   in Genome Biology (http://genomebiology.com/2012/13/1/R4).
+ * Added the capability to shrink introns in all plots including
+   splice graphs, isoforms, read coverage and splice junctions.
+ * Added new methods for identifying specific isoforms in a splice
+   graph and generating separate graphs for them.  See the methods
+   'isoforms', 'isoformDict' and 'isoformGraph' in SpliceGraph.py.
+ * Removed 'AltB' from statistics script because (a) there is no
+   consensus on the correct definition and (b) it causes confusion
+   when statistics change between gene models and predictions.
+ * Graphs generated from PSL files (EST alignments) now include
+   EST identifiers as isoform names.
+
+-------------------
+SpliceGrapher-0.0.5
+-------------------
+ * Added script for identifying the splice forms represented in a set
+   of RNA-Seq data.
+ * Added a new plotting module that uses configuration files so that
+   users may save configurations for specific sets of plots
+ * Improved the spacing and centering of objects in the splice graph
+   and splice junction views
+ * Added an isoform view that allows users to depict a gene's isoforms
+   as individual graphs
+
+-------------------
+SpliceGrapher-0.0.4
+-------------------
+ * Added filtering for spliced alignments using predicted splice site
+   database to remove false-positive junctions from SAM files.
+ * Added workaround for Python copy.deepcopy limitation that prevented
+   copying of splice graphs with more than 220 nodes.
+ * Improvements to visualization scripts to allow users to control font
+   sizes and to improve the appearance of legends.
+ * Added Latex formatting to splicegraph_statistics.py script to make it
+   easy to include results in Latex tables.
+ * SpliceGrapher now requires PyML version 0.7.7

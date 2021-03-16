@@ -1,0 +1,10 @@
+Metadata-Version: 0.2.7
+Name: SpliceGrapher
+Version: 0.2.7
+Summary: predicting splice graphs from diverse evidence
+Home-page: http://combi.cs.colostate.edu/SpliceGrapher/
+Author: Mark F. Rogers
+Author-email: rogersma@cs.colostate.edu
+License: GPL
+Description: UNKNOWN
+Platform: Linux

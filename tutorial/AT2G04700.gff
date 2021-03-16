@@ -1,0 +1,8 @@
+chr2	SpliceGraph	graph	1646807	1648560	.	+	.	ID=AT2G04700
+chr2	SpliceGraph	parent	1646807	1647060	.	+	.	ID=AT2G04700_1;Isoforms=AT2G04700.1;disposition=known
+chr2	SpliceGraph	child	1647149	1647261	.	+	.	ID=AT2G04700_2;Parent=AT2G04700_1;Isoforms=AT2G04700.1;disposition=known
+chr2	SpliceGraph	child	1647553	1647624	.	+	.	ID=AT2G04700_4;Parent=AT2G04700_3;Isoforms=AT2G04700.1;disposition=known
+chr2	SpliceGraph	child	1648092	1648152	.	+	.	ID=AT2G04700_5;Parent=AT2G04700_4,pred_4;Isoforms=AT2G04700.1;disposition=known
+chr2	SpliceGraph	child	1648301	1648560	.	+	.	ID=AT2G04700_6;Parent=AT2G04700_5;Isoforms=AT2G04700.1;disposition=known
+chr2	SpliceGraph	child	1647430	1647479	.	+	.	ID=AT2G04700_3;Parent=AT2G04700_2;Isoforms=AT2G04700.1;disposition=known
+chr2	SpliceGraph	child	1647430	1647624	.	+	.	ID=pred_4;Parent=AT2G04700_2;AltForm=IR;disposition=predicted
