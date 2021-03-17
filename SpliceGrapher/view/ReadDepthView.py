@@ -50,10 +50,12 @@ class ReadDepthView(object) :
         yLimit    = getAttribute('yLimit', 0.0, **args)
         yTitle    = getAttribute('yTitle', 'Read Depth', **args)
 
+        if not self.depths:
+            return
+
         lastPos = min(len(self.depths), self.xrange[1])
-        X       = list(range(self.xrange[0]-1,lastPos))
+        X       = list(range(self.xrange[0]-1, lastPos))
         Y       = [self.depths[i] for i in X]
-        if not Y : return
 
         # Clip both ends:
         Y[0]  = 0

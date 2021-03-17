@@ -116,10 +116,10 @@ def generatePlot(p, plotSpecs, plotAxes, **args):
     if p.hide:
         return {},{}
 
-    data        = getSourceData(p, plotSpecs, **args)
-    patches     = {}
-    extra       = {}
-    padding     = X_PAD_FRACTION * (plotSpecs.maxpos-plotSpecs.minpos)
+    data = getSourceData(p, plotSpecs, **args)
+    patches = {}
+    extra = {}
+    padding = X_PAD_FRACTION * (plotSpecs.maxpos-plotSpecs.minpos)
 
     # Place gene view in background
     if p.background:
@@ -356,7 +356,19 @@ def loadData(plot, dataDict, **args):
     elif plot.file_format == SAM_FORMAT:
         if not gene:
             raise ValueError('Must provide a gene to load gene-specific SAM data.')
-        depthDict,jctDict = getSamReadData(sourcePath, maxpos=maxSAM, minjct=minjct, chromosomes=gene.chromosome, verbose=verbose)
+        import time
+        start_time = time.time()
+        depthDict, jctDict = getSamReadData(sourcePath, maxpos=maxSAM, minjct=minjct, chromosomes=gene.chromosome, verbose=verbose)
+        elapsed = time.time() - start_time
+
+        with open('sam_debug_data.dat', 'w') as out_stream:
+            out_stream.write('{} depths up to {} ({} secs):\n'.format(sourcePath, maxSAM, elapsed))
+            for c in depthDict:
+                out_stream.write('{} depths:\n'.format(c))
+                for i in range(len(depthDict[c])):
+                    if depthDict[c][i] > 0:
+                        out_stream.write('{}\t{}\n'.format(i, depthDict[c][i]))
+
         dataDict[sourcePath][READ_DEPTH_PLOT] = depthDict
         dataDict[sourcePath][JUNCTION_PLOT]   = jctDict
 
