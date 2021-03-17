@@ -20,6 +20,7 @@ Module containing general utility methods.
 """
 import configparser, gzip, locale, os, random, subprocess, sys, time
 from glob import glob
+from io import TextIOWrapper
 
 # Python has no maxint equivalent, so we define our own useful one.
 MAXINT = 10**10
@@ -124,7 +125,7 @@ def ezopen(fileName):
     try:
         line = fileHandle.readline()
         fileHandle.close()
-        return gzip.GzipFile(fileName)
+        return TextIOWrapper(gzip.GzipFile(fileName))
     except:
         return open(fileName)
 

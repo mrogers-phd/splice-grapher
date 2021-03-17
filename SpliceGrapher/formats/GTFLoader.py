@@ -170,8 +170,8 @@ class GTFLoader(object) :
         indicator = ProgressIndicator(1000000, verbose=verbose)
         for line in ezopen(path) :
             indicator.update()
-            try :
-                rec   = GTF_Line(line.strip())
+            try:
+                rec = GTF_Line(line.strip())
             except ValueError as ve :
                 skipped += 1
                 continue
