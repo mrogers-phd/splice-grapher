@@ -52,12 +52,13 @@ parser.add_option('-v',    dest='verbose',   default=False, help='use verbose ou
 
 opts, args = parser.parse_args(sys.argv[1:])
 
-if len(args) > 0 :
+if len(args) > 0:
     parser.print_help()
-    if args : sys.stderr.write('\nReceived %d unexpected parameters:\n  %s\n' % (len(args), '\n  '.join(args)))
+    if args:
+        sys.stderr.write('\nReceived %d unexpected parameters:\n  %s\n' % (len(args), '\n  '.join(args)))
     sys.exit(1)
 
-if not opts.model :
+if not opts.model:
     parser.print_help()
     sys.stderr.write('** No GFF gene model specified.  Use the -m option or set SG_GENE_MODEL in your SpliceGrapher configuration.\n')
     sys.exit(1)
@@ -69,65 +70,70 @@ gene_filter = defaultGeneFilter if opts.alltypes else gene_type_filter
 # Load gene model
 geneModel = loadGeneModels(opts.model, verbose=opts.verbose, alltypes=True)
 geneList  = []
-if opts.genes :
+if opts.genes:
     geneString = opts.genes
-    if os.path.isfile(opts.genes) :
+    if os.path.isfile(opts.genes):
         allGenes   = [s.strip() for s in ezopen(opts.genes)]
         geneString = ','.join(allGenes)
 
-    for gid in geneString.split(',') :
+    for gid in geneString.split(','):
         gene = geneModel.getGeneByName(gid)
-        if not gene :
+        if not gene:
             sys.stderr.write('** Warning: gene %s not found\n' % gid)
-        else :
+        else:
             geneList.append(gene)
-elif opts.chrom :
+elif opts.chrom:
     geneList = geneModel.getGeneRecords(opts.chrom, geneFilter=gene_filter, verbose=opts.verbose)
-else :
+else:
     geneList = geneModel.getAllGenes(geneFilter=gene_filter, verbose=opts.verbose)
 
-if not geneList :
+if not geneList:
     sys.stderr.write('No genes found; exiting.\n')
     sys.exit(1)
 
 geneList.sort()
-if opts.verbose : sys.stderr.write('Generating graphs for %d gene models\n' % len(geneList))
+if opts.verbose:
+    sys.stderr.write('Generating graphs for %d gene models\n' % len(geneList))
 
 outStream = sys.stdout
-if opts.output :
+if opts.output:
     outFile = os.path.join(opts.dir, opts.output) if opts.dir else opts.output
     outStream = open(outFile,'w')
 
 indicator = ProgressIndicator(10000, description='genes', verbose=opts.verbose)
-for gene in geneList :
+for gene in geneList:
     indicator.update()
 
-    try :
+    try:
         graph = makeSpliceGraph(gene, minexon=opts.minexon, verbose=opts.verbose)
-    except ValueError :
+    except ValueError:
         sys.stderr.write('Warning: failed to convert gene %s to splice graph\n' % gene.name)
         #sys.stderr.write('  there are %d isoforms and %d mrna\n' % (len(gene.isoforms), len(gene.mrna)))
         continue
 
-    if graph.minpos > graph.maxpos or len(graph) == 0 :
+    if graph.minpos > graph.maxpos or len(graph) == 0:
         sys.stderr.write('Warning: failed to convert gene %s to splice graph\n' % gene.name)
         continue
 
     # Annotate any AS events found in the gene model
-    if opts.annotate : graph.annotate()
+    if opts.annotate:
+        graph.annotate()
 
-    if opts.dir and not opts.output :
+    if opts.dir and not opts.output:
         outDir = opts.dir
-        if opts.subdirs :
+        if opts.subdirs:
             base = os.path.basename(opts.dir)
-            if base != gene.chromosome :
+            if base != gene.chromosome:
                 outDir = os.path.join(opts.dir, gene.chromosome)
-                if not os.path.exists(outDir) :
+                if not os.path.exists(outDir):
                     os.makedirs(outDir)
-                    if opts.verbose :
+                    if opts.verbose:
                         indicator.reset()
                         sys.stderr.write('created directory %s\n' % outDir)
+
         fileName  = gene.name if opts.name else gene.id
+        if '/' in fileName:
+            fileName = fileName.replace('/', '-')
         outFile   = os.path.join(outDir, '%s.gff' % fileName.upper())
         outStream = open(outFile, 'w')
 
