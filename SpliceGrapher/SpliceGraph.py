@@ -19,7 +19,6 @@
 Module that encapsulates a splice graph.
 """
 from SpliceGrapher.shared.utils import *
-from sys import maxsize as MAXINT
 import sys
 
 # Attributes used in standard GFF3 files:

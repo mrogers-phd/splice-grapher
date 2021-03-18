@@ -19,7 +19,7 @@
 Module containing classes and methods for handling short-read data.
 """
 from SpliceGrapher.formats.fasta import *
-from SpliceGrapher.shared.utils  import idFactory, getAttribute, ProgressIndicator, commaFormat, MAXINT
+from SpliceGrapher.shared.utils  import ezopen, idFactory, getAttribute, ProgressIndicator, commaFormat, MAXINT
 
 import sys
 
@@ -487,6 +487,9 @@ class Cluster(object):
 
     def __eq__(self, other):
         return self.id == other.id
+
+    def __hash__(self):
+        return self.__str__().__hash__()
 
     def __len__(self):
         return self.maxpos-self.minpos+1

@@ -206,6 +206,12 @@ class VirtualCluster(object) :
     def __eq__(self, o) :
         return self.minpos == o.minpos and self.maxpos == o.maxpos
 
+    def __lt__(self, o) :
+        if self.minpos == o.minpos:
+            return self.minpos < o.minpos
+        else:
+            return self.maxpos < o.maxpos
+
     def maxElement(self) :
         """Returns the element (cluster or node) that has the maximum position."""
         lastNode  = sorted(self.nodes)[-1] if self.nodes else None

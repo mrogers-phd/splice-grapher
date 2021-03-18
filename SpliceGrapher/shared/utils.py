@@ -22,8 +22,7 @@ import configparser, gzip, locale, os, random, subprocess, sys, time
 from glob import glob
 from io import TextIOWrapper
 
-# Python has no maxint equivalent, so we define our own useful one.
-MAXINT = 10**10
+from sys import maxsize as MAXINT
 
 def asList(value, delim=','):
     """Generic method for creating a list from a given value.
@@ -121,7 +120,6 @@ def ezopen(fileName):
         raise ValueError('file does not exist at %s' % fileName)
     
     fileHandle  = gzip.GzipFile(fileName)
-    gzippedFile = True
     try:
         line = fileHandle.readline()
         fileHandle.close()
