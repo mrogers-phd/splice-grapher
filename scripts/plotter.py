@@ -31,11 +31,12 @@ import warnings
 warnings.filterwarnings('ignore')
 #==========================================================================
 
-def helpFormat(strings, offset="    ", count=6) :
+def helpFormat(strings, offset="    ", count=6):
     """Formats a list of strings for extended help."""
     result = ""
-    for i in range(0,len(strings),count) :
-        if result : result += '\n'
+    for i in range(0,len(strings),count):
+        if result:
+            result += '\n'
         result += offset + ', '.join(strings[i:i+count])
     return result
 
@@ -88,12 +89,13 @@ DEFAULT_WIDTH  = 8.5
 
 VALID_FORMATS = ['emf', 'eps', 'pdf', 'png', 'ps', 'raw', 'rgba', 'svg', 'svgz']
 
-def setValue(argv, key, cfgValue, default) :
+def setValue(argv, key, cfgValue, default):
     """Simple method that performs the logic for assigning a value to a
     parameter.  If there is no configuration value, returns the default.
     If there is a configuration value, the result depends on whether the
     user entered something on the command line."""
-    if not cfgValue : return default
+    if not cfgValue:
+        return default
     return default if key in argv else cfgValue
 
 USAGE = """%prog config-file [options]
@@ -113,12 +115,12 @@ parser.add_option('-v', dest='verbose', default=False,          help='Verbose mo
 parser.add_option('--extended', dest='extended', default=False,  help='Output extended help text and quit [default: %default]', action='store_true')
 opts, args = parser.parse_args(sys.argv[1:])
 
-if opts.extended :
+if opts.extended:
     parser.print_help()
     sys.stderr.write(EXTENDED_HELP)
     sys.exit(1)
 
-if len(args) != 1 :
+if len(args) != 1:
     parser.print_help()
     sys.exit(1)
 
@@ -126,21 +128,22 @@ cfgFile     = args[0]
 validateFile(cfgFile)
 config      = SinglePlotConfig(cfgFile)
 displayList = config.getPlotList()
-if not displayList :
+if not displayList:
     sys.stderr.write('No plots specified in config file; nothing to do!\n')
     sys.exit(1)
 plotConfig = config.getConfiguration()
-for p in displayList : validateFile(p.source_file)
+for p in displayList:
+    validateFile(p.source_file)
 
 #=============================================================
 # Save matplotlib includes until after parsing arguments
 import matplotlib
 
 outputFile = opts.output if opts.output else plotConfig.output_file
-if outputFile :
+if outputFile:
     foo,ext = os.path.splitext(outputFile)
     ext     = ext.replace('.','')
-    if ext.lower() not in VALID_FORMATS :
+    if ext.lower() not in VALID_FORMATS:
         raise ValueError('Unrecognized output format: %s' % ext.upper())
     matplotlib.use('agg')
 
@@ -152,9 +155,12 @@ writeStartupMessage()
 geneModels = getGeneModels(displayList, verbose=opts.verbose)
 geneSpecs  = loadGeneData(displayList, plotConfig, models=geneModels, verbose=opts.verbose)
 
-if geneSpecs.strand is None : raise Exception('No strand found for plots')
-if geneSpecs.chrom is None  : raise Exception('No chromosome found for plots')
-if geneSpecs.minpos == MAXINT or geneSpecs.maxpos == 0 : raise Exception('Unable to establish min/max plot boundaries.')
+if geneSpecs.strand is None:
+    raise Exception('No strand found for plots')
+if geneSpecs.chrom is None:
+    raise Exception('No chromosome found for plots')
+if geneSpecs.minpos == MAXINT or geneSpecs.maxpos == 0:
+    raise Exception('Unable to establish min/max plot boundaries.')
 
 # Set values based on command-line > configuration > defaults relation
 width    = setValue(sys.argv, '-W', plotConfig.width, opts.width)
@@ -162,7 +168,7 @@ height   = setValue(sys.argv, '-H', plotConfig.height, opts.height)
 fontsize = setValue(sys.argv, '-F', plotConfig.fontsize, opts.fontsize)
 geneSpecs.setFontSize(fontsize)
 
-if opts.verbose :
+if opts.verbose:
     sys.stderr.write('Display area %.1f x %.1f; %.1fpt font size\n' % (width, height, fontsize))
 
 initializePlots(geneSpecs, width, height, displayList)
@@ -171,19 +177,21 @@ topLine      = DISPLAY_HEIGHT - titlePadding
 availHeight  = getAvailableHeight(displayList, fontsize, legend=plotConfig.legend)
 
 patchDict = {}
-for p in displayList :
-    if p.hide : continue
-    height         = availHeight * p.relative_size
-    curAxes        = axes([AXIS_LEFT, topLine-height, AXIS_WIDTH, height])
-    topLine        = topLine - height - titlePadding
+for p in displayList:
+    if p.hide:
+        continue
+    height = availHeight * p.relative_size
+    curAxes = axes([AXIS_LEFT, topLine-height, AXIS_WIDTH, height])
+    topLine = topLine - height - titlePadding
     patches,ignore = generatePlot(p, geneSpecs, curAxes, shrink=plotConfig.shrink_introns, xTickLabels=(p==displayList[-1]), verbose=True)
     patchDict.update(patches)
 
-if plotConfig.legend and patchDict :
+if plotConfig.legend and patchDict:
     plotLegend(patchDict)
 
-if outputFile :
-    if opts.verbose : sys.stderr.write('Writing graph output to %s\n' % outputFile)
+if outputFile:
+    if opts.verbose:
+        sys.stderr.write('Writing graph output to %s\n' % outputFile)
     savefig(outputFile, dpi=400)
-else :
+else:
     show()
