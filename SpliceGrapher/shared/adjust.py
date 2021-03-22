@@ -32,6 +32,12 @@ class AdjustableRange(object):
     def __cmp__(self,o):
         return self.minpos-o.minpos
 
+    def __lt__(self, o):
+        if self.minpos == o.minpos:
+            return self.maxpos < o.maxpos
+        else:
+            return self.minpos < o.minpos
+
     def __len__(self):
         return self.maxpos-self.minpos+1
 

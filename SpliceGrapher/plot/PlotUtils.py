@@ -82,7 +82,7 @@ def formatTitleString(p, **args):
     graph      = getAttribute('graph', None, **args)
     result     = p.title_string
     try:
-        envList    = DIRECTIVE_MATCH.findall(result)
+        envList = DIRECTIVE_MATCH.findall(result)
     except TypeError:
         raise ValueError('Bad title string %s' % str(result))
 
@@ -418,6 +418,8 @@ def loadGeneData(plots, plotConfig, maxSAM=0, **args):
 
             if plotConfig.shrink_introns and p.plot_type in SHRINKABLE_PLOTS:
                 if not ranges:
+                    if verbose:
+                        sys.stderr.write('  (setting intron shrink ranges based on {} {})\n'.format(sourcePath, plotType))
                     if SPLICEGRAPH_PLOT in dataDict[sourcePath]:
                         ranges = getGraphRanges(dataDict[sourcePath][SPLICEGRAPH_PLOT], scaleFactor=plotConfig.shrink_factor)
                     elif ISOFORM_PLOT in dataDict[sourcePath]:
